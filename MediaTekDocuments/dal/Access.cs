@@ -36,6 +36,12 @@ namespace MediaTekDocuments.dal
         private const string POST = "POST";
         /// <summary>
         /// méthode HTTP pour update
+        /// </summary>
+        private const string PUT = "PUT";
+        ///<summary>
+        ///Methode HTTP pour delete
+        /// </summary>
+        private const string DELETE = "DELETE";
 
         /// <summary>
         /// Méthode privée pour créer un singleton
@@ -143,6 +149,70 @@ namespace MediaTekDocuments.dal
         }
 
         /// <summary>
+        /// Créer une entite dans la BDD, return true si l'opération, c'est correctement déroulé
+        /// </summary>
+        /// <param name="jsonEntite"></param>
+        /// <returns></returns>
+        public bool CreerEntite(string type, String jsonEntite)
+        {
+            jsonEntite = jsonEntite.Replace(' ', '-');
+            try
+            {
+                // récupération soit d'une liste vide (requête ok) soit de null (erreur)
+                List<Object> liste = TraitementRecup<Object>(POST, type + "/" + jsonEntite);
+                return (liste != null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Modifie une entite dans la BDD, return true si l'opération, c'est correctement déroulé
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="jsonEntite"></param>
+        /// <returns></returns>
+        public bool ModifierEntite(string type, string id, String jsonEntite)
+        {
+            jsonEntite = jsonEntite.Replace(' ', '-');
+            try
+            {
+                // récupération soit d'une liste vide (requête ok) soit de null (erreur)
+                List<Object> liste = TraitementRecup<Object>(PUT, type + "/" + id + "/" + jsonEntite);
+                return (liste != null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Supprime une entité dans la BDD, return true si l'opération, c'est correctement déroulé
+        /// </summary>
+        /// <param name="jsonEntite"></param>
+        /// <returns></returns>
+        public bool SupprimerEntite(string type, String jsonEntite)
+        {
+            jsonEntite = jsonEntite.Replace(' ', '-');
+            try
+            {
+                // récupération soit d'une liste vide (requête ok) soit de null (erreur)
+                List<Object> liste = TraitementRecup<Object>(DELETE, type + "/" + jsonEntite);
+                return (liste != null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        /// <summary>
         /// ecriture d'un exemplaire en base de données
         /// </summary>
         /// <param name="exemplaire">exemplaire à insérer</param>
@@ -174,6 +244,7 @@ namespace MediaTekDocuments.dal
             List<T> liste = new List<T>();
             try
             {
+                Console.WriteLine("Traitement recup" + message);
                 JObject retour = api.RecupDistant(methode, message);
                 // extraction du code retourné
                 String code = (String)retour["code"];
