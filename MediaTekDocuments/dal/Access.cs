@@ -148,6 +148,18 @@ namespace MediaTekDocuments.dal
             return lesExemplaires;
         }
 
+        ///<summary>
+        ///Retourne les exemplaire d'un livre
+        /// </summary>
+        /// <param name="idLivreDvd">id du livre concernée</param>
+        /// <returns>liste d'objet Exemplaire</returns>
+        public List<Exemplaire> GetExemplairesLivre(string idLivreDvd)
+        {
+            String jsonIdLivreDvd = convertToJson("id", idLivreDvd);
+            List<Exemplaire> LeslivresExemplaires = TraitementRecup<Exemplaire>(GET, "exemplaire/" + jsonIdLivreDvd);
+            return LeslivresExemplaires;
+        }
+
         /// <summary>
         /// Créer une entite dans la BDD, return true si l'opération, c'est correctement déroulé
         /// </summary>
