@@ -135,6 +135,12 @@ namespace MediaTekDocuments.dal
             return lesRevues;
         }
 
+        public List<Suivi> GetAllSuivis()
+        {
+            IEnumerable<Suivi> LesSuivis = TraitementRecup<Suivi>(GET, "suivi");
+            return new List<Suivi>(LesSuivis);
+        }
+
 
         /// <summary>
         /// Retourne les exemplaires d'une revue
@@ -242,6 +248,43 @@ namespace MediaTekDocuments.dal
                 Console.WriteLine(ex.Message);
             }
             return false; 
+        }
+
+
+        /// <summary>
+        /// Retourne les commandes d'un livre
+        /// </summary>
+        /// <param name="idLivre"></param>
+        /// <returns></returns>
+        public List<CommandeDocument> GetCommandesLivres(string idLivre)
+        {
+            String jsonIdDocument = convertToJson("idLivreDvd", idLivre);
+            List<CommandeDocument> lesCommandesLivres = TraitementRecup<CommandeDocument>(GET, "commandedocument/" + jsonIdDocument);
+            return lesCommandesLivres;
+        }
+
+        /// <summary>
+        /// Retourne les abonnements d'une revue
+        /// </summary>
+        /// <param name="idRevue"></param>
+        /// <returns></returns>
+        public List<Abonnement> GetAbonnements(string idRevue)
+        {
+            String jsonAbonnementIdRevue = convertToJson("idRevue", idRevue);
+            List<Abonnement> abonnements = TraitementRecup<Abonnement>(GET, "abonnements/" + jsonAbonnementIdRevue);
+            return abonnements;
+        }
+
+        /// <summary>
+        /// Retourne l'index max en string
+        /// de certaines tables
+        /// </summary>
+        /// <param name="maxIndex"></param>
+        /// <returns></returns>
+        public string getMaxIndex(string maxIndex)
+        {
+            List<Categorie> maxindex = TraitementRecup<Categorie>(GET, maxIndex);
+            return maxindex[0].Id;
         }
 
         /// <summary>
