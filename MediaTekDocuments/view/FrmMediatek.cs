@@ -253,9 +253,9 @@ namespace MediaTekDocuments.view
             txbLivresImage.Text = "";
             txbLivresIsbn.Text = "";
             txbLivresNumero.Text = "";
-            cbxLivresGenreInfos.SelectedIndex = - 1;
+            cbxLivresGenreInfos.SelectedIndex = -1;
             cbxLivresPublicInfos.SelectedIndex = -1;
-            cbxLivresRayonInfos.SelectedIndex = -1; 
+            cbxLivresRayonInfos.SelectedIndex = -1;
             txbLivresTitre.Text = "";
             pcbLivresImage.Image = null;
         }
@@ -454,7 +454,7 @@ namespace MediaTekDocuments.view
                 // fonction a modifier pour prendre en charge le faite que l'on ne pourra pas supprimer un livre tant que des examplaire de se livre existe
                 if (controller.SupprimerLivre(leLivre))
                 {
-                    
+
                     lesLivres = controller.GetAllLivres();
                     RemplirLivresListeComplete();
                 }
@@ -955,7 +955,7 @@ namespace MediaTekDocuments.view
             {
                 string id = txbDvdNumero.Text; ;
                 int? a = null;  // version simplifié de nullabe <int> a
-                
+
                 try
                 {
                     a = int.Parse(txbDvdNumero.Text);
@@ -1774,7 +1774,7 @@ namespace MediaTekDocuments.view
 
         #region Onglet Commande Livres
 
-        
+
         private readonly BindingSource bdgComLivresListe = new BindingSource();
         private List<Livre> lesComLivres = new List<Livre>();
         private readonly BindingSource bdgComLivreGenresInfo = new BindingSource();
@@ -1782,7 +1782,7 @@ namespace MediaTekDocuments.view
         private readonly BindingSource bdgComLivreRayonInfo = new BindingSource();
         private readonly BindingSource bdgListeCommandeLivre = new BindingSource();
         private readonly BindingSource bdgComlivreEtat = new BindingSource();
-        private List<CommandeDocument> lesCommandesLivre = new List<CommandeDocument>();
+        private List<CommandeDocument> lesCommandes = new List<CommandeDocument>();
         /// <summary>
         /// Ouverture de l'onglet Commande de Livres : 
         /// appel des méthodes pour remplir le datagrid des livres et des combos (genre, rayon, public)
@@ -1799,16 +1799,18 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllPublics(), bdgComLivrePublicInfo, cbxComLivresPublicInfos);
             RemplirComboCategorie(controller.GetAllRayons(), bdgComLivreRayonInfo, cbxComLivresRayonInfos);
             RemplirComboSuivi(controller.GetAllSuivis(), bdgComlivreEtat, cbxCommandeLivreEtat);
-            RemplirLivresListeComplete();
+            CommandeLivreEnCoursDeModif(false);
+            RemplirComLivresListeComplete();
         }
 
         /// <summary>
         /// Remplit le dategrid avec la liste reçue en paramètre
+        /// affiche la liste des livres
         /// </summary>
-        /// <param name="Comlivres">liste de livres</param>
-        private void RemplirComLivresListe(List<Livre> Comlivres)
+        /// <param name="lesComlivres">liste de livres</param>
+        private void RemplirComLivresListe(List<Livre> lesComlivres)
         {
-            bdgComLivresListe.DataSource = Comlivres;
+            bdgComLivresListe.DataSource = lesComlivres;
             dgvComLivresListe.DataSource = bdgComLivresListe;
             dgvComLivresListe.Columns["isbn"].Visible = false;
             dgvComLivresListe.Columns["idRayon"].Visible = false;
@@ -1818,6 +1820,31 @@ namespace MediaTekDocuments.view
             dgvComLivresListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvComLivresListe.Columns["id"].DisplayIndex = 0;
             dgvComLivresListe.Columns["titre"].DisplayIndex = 1;
+        }
+
+        /// <summary>
+        /// Remplit le dategrid avec la liste reçue en paramètre
+        /// affiche la liste des commandes associé a un livre
+        /// </summary>
+        /// <param name="lesCommandesLivre">liste des commandes d'un livres</param>
+        private void RemplirLivresComListeCommandes(List<CommandeDocument> lesCommandesLivre)
+        {
+            if (lesCommandesLivre.Count > 0)
+            {
+                bdgListeCommandeLivre.DataSource = lesCommandesLivre;
+                dgvLivreCommande.DataSource = bdgListeCommandeLivre;
+                dgvLivreCommande.Columns["idLivreDvd"].Visible = false;
+                dgvLivreCommande.Columns["idSuivi"].Visible = false;
+                dgvLivreCommande.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dgvLivreCommande.Columns["id"].DisplayIndex = 0;
+                dgvLivreCommande.Columns["dateCommande"].DisplayIndex = 1;
+                dgvLivreCommande.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            else
+            {
+                dgvLivreCommande.Columns.Clear();
+            }
+
         }
 
         /// <summary>
@@ -1853,7 +1880,7 @@ namespace MediaTekDocuments.view
         }
 
         /// <summary>
-        /// Recherche et affichage des livres dont le titre matche acec la saisie.
+        /// Recherche et affichage des livres dont le titre matche avec la saisie.
         /// Cette procédure est exécutée à chaque ajout ou suppression de caractère
         /// dans le textBox de saisie.
         /// </summary>
@@ -1898,32 +1925,10 @@ namespace MediaTekDocuments.view
             cbxComLivresRayonInfos.SelectedIndex = cbxComLivresRayonInfos.FindString(livre.Rayon);
             txbComLivresTitre.Text = livre.Titre;
             string image = livre.Image;
-            try
-            {
-                pcbLivresImage.Image = Image.FromFile(image);
-            }
-            catch
-            {
-                pcbLivresImage.Image = null;
-            }
+
         }
 
-        /// <summary>
-        /// Vide les zones d'affichage des informations du livre
-        /// </summary>
-        private void VideComLivresInfos()
-        {
-            txbComLivresAuteur.Text = "";
-            txbComLivresCollection.Text = "";
-            txbComLivresImage.Text = "";
-            txbComLivresIsbn.Text = "";
-            txbComLivresNumero.Text = "";
-            cbxComLivresGenreInfos.SelectedIndex = -1;
-            cbxComLivresPublicInfos.SelectedIndex = -1;
-            cbxComLivresRayonInfos.SelectedIndex = -1;
-            txbComLivresTitre.Text = "";
-            pcbLivresImage.Image = null;
-        }
+
 
         /// <summary>
         /// Filtre sur le genre
@@ -1936,6 +1941,7 @@ namespace MediaTekDocuments.view
             {
                 txbComLivresTitreRecherche.Text = "";
                 txbComLivresNumRecherche.Text = "";
+                dgvComLivresListe.ClearSelection();
                 Genre genre = (Genre)cbxComLivresGenres.SelectedItem;
                 List<Livre> Comlivres = lesComLivres.FindAll(x => x.Genre.Equals(genre.Libelle));
                 RemplirComLivresListe(Comlivres);
@@ -1955,6 +1961,7 @@ namespace MediaTekDocuments.view
             {
                 txbComLivresTitreRecherche.Text = "";
                 txbComLivresNumRecherche.Text = "";
+                dgvComLivresListe.ClearSelection();
                 Public lePublic = (Public)cbxComLivresPublics.SelectedItem;
                 List<Livre> lesComlivres = lesLivres.FindAll(x => x.Public.Equals(lePublic.Libelle));
                 RemplirComLivresListe(lesComlivres);
@@ -1974,9 +1981,10 @@ namespace MediaTekDocuments.view
             {
                 txbComLivresTitreRecherche.Text = "";
                 txbComLivresNumRecherche.Text = "";
+                dgvComLivresListe.ClearSelection();
                 Rayon rayon = (Rayon)cbxComLivresRayons.SelectedItem;
-                List<Livre> Comlivres = lesComLivres.FindAll(x => x.Rayon.Equals(rayon.Libelle));
-                RemplirComLivresListe(Comlivres);
+                List<Livre> lesComlivres = lesComLivres.FindAll(x => x.Rayon.Equals(rayon.Libelle));
+                RemplirComLivresListe(lesComlivres);
                 cbxComLivresGenres.SelectedIndex = -1;
                 cbxComLivresPublics.SelectedIndex = -1;
             }
@@ -1988,25 +1996,7 @@ namespace MediaTekDocuments.view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DgvComLivresListe_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dgvComLivresListe.CurrentCell != null)
-            {
-                try
-                {
-                    Livre livre = (Livre)bdgComLivresListe.List[bdgComLivresListe.Position];
-                    AfficheComLivresInfos(livre);
-                }
-                catch
-                {
-                    VideComLivresZones();
-                }
-            }
-            else
-            {
-                VideComLivresInfos();
-            }
-        }
+
 
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des livres
@@ -2096,32 +2086,10 @@ namespace MediaTekDocuments.view
             }
             RemplirComLivresListe(sortedList);
         }
-        #region Commande de livres : gestion 
 
 
-        /// <summary>
-        /// Remplit le dategrid avec la liste reçue en paramètre
-        /// </summary>
-        /// <param name="lesCommandesLivres">liste de livres</param>
-        private void RemplirLivresComListeCommandes(List<CommandeDocument> lesCommandesLivres)
-        {
-            if (lesCommandesLivres.Count > 0)
-            {
-                bdgListeCommandeLivre.DataSource = lesCommandesLivres;
-                dgvLivreCommande.DataSource = bdgListeCommandeLivre;
-                dgvLivreCommande.Columns["idLivreDvd"].Visible = false;
-                dgvLivreCommande.Columns["idSuivi"].Visible = false;
-                dgvLivreCommande.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                dgvLivreCommande.Columns["id"].DisplayIndex = 0;
-                dgvLivreCommande.Columns["dateCommande"].DisplayIndex = 1;
-                dgvLivreCommande.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            }
-            else
-            {
-                dgvLivreCommande.Columns.Clear();
-            }
 
-        }
+
         /// <summary>
         /// Récupère et affiche les commandes d'un livre
         /// </summary>
@@ -2130,12 +2098,13 @@ namespace MediaTekDocuments.view
         {
             string idLivre = livre.Id;
             VideLivresComInfos();
-            lesCommandesLivre = controller.GetCommandesLivres(idLivre);
+            Console.WriteLine("test d'appel de methode");
+            lesCommandes = controller.GetCommandesLivres(idLivre);
             GrpLivreCommande.Text = livre.Titre + " de " + livre.Auteur;
-            Console.WriteLine("lesCommandes.count = " + lesCommandesLivre.Count.ToString());
-            if (lesCommandesLivre.Count == 0)
+            Console.WriteLine("lesCommandes.count = " + lesCommandes.Count.ToString());
+            if (lesCommandes.Count == 0)
                 VideLivresComInfos();
-            RemplirLivresComListeCommandes(lesCommandesLivre);
+            RemplirLivresComListeCommandes(lesCommandes);
         }
 
         // <summary>
@@ -2184,12 +2153,14 @@ namespace MediaTekDocuments.view
             cbxLivresRayonInfos.Enabled = modif;
             txbLivresImage.ReadOnly = !modif;
             txbComLivresNumero.ReadOnly = true;
-            dgvLivresListe.Enabled = !modif;
+            dgvComLivresListe.Enabled = !modif;
+            dgvLivreCommande.Enabled = !modif;
             txbCommandeNumeroLivre.ReadOnly = true;
             DtpComandeLivre.Enabled = !modif;
             txbCommandeMontant.Enabled = !modif;
             txbCommandeExemplaireLivre.Enabled = !modif;
             txbCommandeLivreId.Enabled = !modif;
+            ajouterBool = false;
         }
 
         /// <summary>
@@ -2203,7 +2174,7 @@ namespace MediaTekDocuments.view
             DtpComandeLivre.Value = laCommande.DateCommande;
             txbCommandeMontant.Text = laCommande.Montant.ToString();
             txbCommandeExemplaireLivre.Text = laCommande.NbExemplaire.ToString();
-            
+            txbCommandeLivreId.Text = laCommande.IdLivreDvd;
             cbxCommandeLivreEtat.SelectedIndex = cbxCommandeLivreEtat.FindString(laCommande.Etat);
         }
 
@@ -2250,7 +2221,7 @@ namespace MediaTekDocuments.view
         }
 
         /// <summary>
-        /// annule les modifications en cours
+        /// supprime une commande de livre
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2267,7 +2238,7 @@ namespace MediaTekDocuments.view
                 {
                     if (controller.SupprimerLivreDvdCom(commandeDocument))
                     {
-                        
+
                         try
                         {
                             Livre livre = (Livre)bdgComLivresListe.List[bdgComLivresListe.Position];
@@ -2290,7 +2261,7 @@ namespace MediaTekDocuments.view
                 MessageBox.Show("Veuillez selectionner une commande");
             }
 
-           
+
 
         }
 
@@ -2360,7 +2331,7 @@ namespace MediaTekDocuments.view
                 {
                     CommandeDocument commandeLivre = new CommandeDocument(id, dateCommande, montant, nbExemplaire, idLivreDvd, idSuivi, etat);
                     if (!ajouterBool)
-                        checkValid = controller.UpdateLivreDvdCom(commandeLivre);
+                        checkValid = controller.ModifierLivreDvdCom(commandeLivre);
                     else
                         checkValid = controller.CreerLivreDvdCom(commandeLivre);
                     if (checkValid)
@@ -2387,12 +2358,55 @@ namespace MediaTekDocuments.view
             }
 
         }
+
+
         /// <summary>
         /// Sur la sélection d'une ligne ou cellule dans le grid
-        /// affichage du detaille de la commande
+        /// affichage les commandes relative a un livre.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        private void DgvComLivresListe_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvComLivresListe.CurrentCell != null)
+            {
+                try
+                {
+                    Livre livre = (Livre)bdgComLivresListe.List[bdgComLivresListe.Position];
+                    AfficheLivresCommandeInfos(livre);
+                    txbComLivresNumero.Text = livre.Id;
+                }
+                catch
+                {
+                    VideLivresComInfos();
+                }
+            }
+            else
+            {
+
+                VideLivresComInfos();
+
+            }
+            if (dgvComLivresListe.CurrentCell != null)
+            {
+                try
+                {
+                    Livre livre = (Livre)bdgComLivresListe.List[bdgComLivresListe.Position];
+                    AfficheComLivresInfos(livre);
+                }
+                catch
+                {
+                    VideComLivresZones();
+                }
+            }
+        }
+
+        ///<summary>
+        /// Sur la sélection d'une ligne ou cellule dans le grid
+        /// affichage les details d'une commande .
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="sender"></param>
         private void dgvLivreCommande_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvLivreCommande.CurrentCell != null)
@@ -2406,22 +2420,21 @@ namespace MediaTekDocuments.view
                 {
                     VideLivresComInfos();
                 }
+
             }
             else
             {
                 VideLivresComInfos();
             }
         }
-
         /// <summary>
-        /// Sur la sélection d'une ligne ou cellule dans le grid
-        /// affichage des informations de la commande
+        /// tri sur les colonnes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void dgvLivresComListeCom_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dgvLivresCommande_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (lesCommandesLivre.Count > 0 && dgvLivreCommande != null)
+            if (lesCommandes.Count > 0 && dgvLivreCommande != null)
             {
                 VideLivresComInfos();
                 string titreColonne = dgvLivreCommande.Columns[e.ColumnIndex].HeaderText;
@@ -2429,26 +2442,677 @@ namespace MediaTekDocuments.view
                 switch (titreColonne)
                 {
                     case "Id":
-                        sortedList = lesCommandesLivre.OrderBy(o => o.Id).ToList();
+                        sortedList = lesCommandes.OrderBy(o => o.Id).ToList();
                         break;
                     case "DateCommande":
-                        sortedList = lesCommandesLivre.OrderBy(o => o.DateCommande).ToList();
+                        sortedList = lesCommandes.OrderBy(o => o.DateCommande).ToList();
                         break;
                     case "NbExemplaire":
-                        sortedList = lesCommandesLivre.OrderBy(o => o.NbExemplaire).ToList();
+                        sortedList = lesCommandes.OrderBy(o => o.NbExemplaire).ToList();
                         break;
                     case "Etat":
-                        sortedList = lesCommandesLivre.OrderBy(o => o.IdSuivi).ToList();
+                        sortedList = lesCommandes.OrderBy(o => o.IdSuivi).ToList();
                         break;
                     case "Montant":
-                        sortedList = lesCommandesLivre.OrderBy(o => o.Montant).ToList();
+                        sortedList = lesCommandes.OrderBy(o => o.Montant).ToList();
                         break;
                 }
                 RemplirLivresComListeCommandes(sortedList);
             }
         }
-        #endregion
 
         #endregion
+
+        #region Onglet Commande Dvd
+
+        private readonly BindingSource bdgComDvdListe = new BindingSource();
+        private List<Dvd> lesComDvd = new List<Dvd>();
+        private readonly BindingSource bdgComDvdGenreInfos = new BindingSource();
+        private readonly BindingSource bdgComDvdPublicInfos = new BindingSource();
+        private readonly BindingSource bdgComDvdRayonInfos = new BindingSource();
+        private readonly BindingSource bdgCommandeListeDvd = new BindingSource();
+        private readonly BindingSource bdgCommandeEtatDvd = new BindingSource();
+        private List<CommandeDocument> lesCommandesDvd = new List<CommandeDocument>();
+
+
+        ///<summary>
+        ///Ouverture de l'onglet de commande de dvd:
+        ///appel des methodes pour remplir les datagrid et les combos 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TabCommandeDvd_Enter(object sender, EventArgs e)
+        {
+            lesComDvd = controller.GetAllDvd();
+            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxComDvdGenres);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxComDvdPublics);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxComDvdRayons);
+            RemplirComboCategorie(controller.GetAllGenres(), bdgComDvdGenreInfos, cbxComDvdGenreInfos);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgComDvdPublicInfos, cbxComDvdPublicInfos);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgComDvdRayonInfos, cbxComDvdRayonInfos);
+            RemplirComboSuivi(controller.GetAllSuivis(), bdgCommandeEtatDvd, cbxCommandeDvdEtat);
+            CommandeDvdEnCoursDeModif(false);
+            RemplirComDvdListeComplete();
+        }
+
+        ///<summary>
+        ///Rempli le datagrid de la liste des dvd
+        /// </summary>
+        /// <param name="lesComDvd">Liste des dvd</param>
+        private void RemplirComDvdListe(List<Dvd> lesComDvd)
+        {
+            bdgComDvdListe.DataSource = lesComDvd;
+            dgvComDvdListe.DataSource = bdgComDvdListe;
+            dgvComDvdListe.Columns["idGenre"].Visible = false;
+            dgvComDvdListe.Columns["idPublic"].Visible = false;
+            dgvComDvdListe.Columns["idRayon"].Visible = false;
+            dgvComDvdListe.Columns["image"].Visible = false;
+            dgvComDvdListe.Columns["synopsis"].Visible = false;
+            dgvComDvdListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvComDvdListe.Columns["id"].DisplayIndex = 0;
+            dgvComDvdListe.Columns["titre"].DisplayIndex = 1;
+
+        }
+
+        ///<summary>
+        ///Rempli le datagrid concernant les commandes des dvd
+        /// </summary>
+        /// <param name="LesCommandes"></param>
+        private void RemplirCommandeDvdListe(List<CommandeDocument> lesCommandes)
+        {
+            if(lesCommandes.Count > 0)
+            {
+                bdgCommandeListeDvd.DataSource = lesCommandes;
+                dgvCommandeDvd.DataSource = bdgCommandeListeDvd;
+                dgvCommandeDvd.Columns["idLivreDvd"].Visible = false;
+                dgvCommandeDvd.Columns["idSuivi"].Visible = false;
+                dgvCommandeDvd.Columns["id"].Visible = false;
+                dgvCommandeDvd.Columns["dateCommande"].Visible = false;
+                dgvCommandeDvd.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                dgvCommandeDvd.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            else
+            {
+                dgvCommandeDvd.ClearSelection();
+            }
+            
+        }
+
+        ///<summary>
+        ///Recherche et affiche le dvd dont on a saisi le numero
+        ///Si non, affichage d'un message box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnComDvdNumRecherche_Click(object sender, EventArgs e)
+        {
+            if (!txbComDvdNumRecherche.Text.Equals(""))
+            {
+                txbComDvdTitreRecherche.Text = "";
+                cbxComDvdGenres.SelectedIndex = -1;
+                cbxComDvdPublics.SelectedIndex = -1;
+                cbxComDvdRayons.SelectedIndex = -1;
+                Dvd ComDvd = lesComDvd.Find(x => x.Id.Equals(txbComDvdNumRecherche.Text));
+                if (ComDvd != null)
+                {
+                    List<Dvd> Dvd = new List<Dvd>() { ComDvd };
+                    RemplirComDvdListe(Dvd);
+                }
+                else
+                {
+                    MessageBox.Show("Numero introuvable");
+                    RemplirComDvdListeComplete();
+                }
+            }
+            else
+            {
+                RemplirComDvdListeComplete();
+            }
+        }
+
+        ///<summary>
+        ///Recherche et affiche les dvd dont le titre match avec la saisie.
+        ///Cette procedure est exécute a chauqe ou suppression de caractere
+        ///dans le textbox de saisie.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void txbComDvdTitreRecherche_TextChanged(object sender, EventArgs e)
+        {
+            if (!txbComDvdTitreRecherche.Text.Equals(""))
+            {
+                cbxComDvdGenres.SelectedIndex = -1;
+                cbxComDvdRayons.SelectedIndex = -1;
+                cbxComDvdPublics.SelectedIndex = -1;
+                txbComDvdNumRecherche.Text = "";
+                List<Dvd> lesDvdParTitre;
+                lesDvdParTitre = lesComDvd.FindAll(x => x.Titre.ToLower().Contains(txbComDvdTitreRecherche.Text.ToLower()));
+                RemplirComDvdListe(lesDvdParTitre);
+            }
+            else
+            {
+                // si la zone de saisie est vide et aucun élément combo sélectionné, réaffichage de la liste complète
+                if (cbxComDvdGenres.SelectedIndex < 0 && cbxComDvdPublics.SelectedIndex < 0 && cbxComDvdRayons.SelectedIndex < 0
+                    && txbComDvdNumRecherche.Text.Equals(""))
+                {
+                    RemplirComDvdListeComplete();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Affichage des informations du dvd sélectionné
+        /// </summary>
+        /// <param name="dvd">le dvd</param>
+        private void AfficheComDvdInfos(Dvd dvd)
+        {
+            txbComDvdRealisateur.Text = dvd.Realisateur;
+            txbComDvdSynopsis.Text = dvd.Synopsis;
+            txbDvdImage.Text = dvd.Image;
+            txbComDvdDuree.Text = dvd.Duree.ToString();
+            txbComDvdNumero.Text = dvd.Id;
+            cbxComDvdGenreInfos.SelectedIndex = cbxComDvdGenreInfos.FindString(dvd.Genre);
+            cbxComDvdPublicInfos.SelectedIndex = cbxComDvdPublicInfos.FindString(dvd.Public);
+            cbxComDvdRayonInfos.SelectedIndex = cbxComDvdRayonInfos.FindString(dvd.Rayon);
+            txbComDvdTitre.Text = dvd.Titre;
+            string image = dvd.Image;
+            
+        }
+
+        ///<summary>
+        ///Affiche les informations detaillé d'une commande
+        /// </summary>
+        /// <param name="laCommande"></param>
+        private void AfficherInfoCommandeDvd(CommandeDocument laCommande)
+        {
+            txbComDvdNumero.Text = laCommande.Id;
+            txbCommandeDvdId.Text = laCommande.IdLivreDvd;
+            dtpCommandeDvdDate.Value = laCommande.DateCommande;
+            txbCommandeDvdMontant.Text = laCommande.Montant.ToString();
+            txbCommandeDvdNbExemplaire.Text = laCommande.NbExemplaire.ToString();
+            txbCommandeDvdId.Text = laCommande.IdLivreDvd;
+            cbxCommandeDvdEtat.SelectedIndex = cbxCommandeDvdEtat.FindString(laCommande.IdSuivi.ToString());
+        }
+
+        /// <summary>
+        /// Vide les zones d'affichage des informations du dvd
+        /// </summary>
+        private void VideComDvdInfos()
+        {
+            txbComDvdRealisateur.Text = "";
+            txbComDvdSynopsis.Text = "";
+            txbComDvdImage.Text = "";
+            txbComDvdDuree.Text = "";
+            txbComDvdNumero.Text = "";
+            cbxComDvdGenreInfos.SelectedIndex = -1;
+            cbxComDvdPublicInfos.SelectedIndex = -1;
+            cbxComDvdRayonInfos.SelectedIndex = -1;
+            txbComDvdTitre.Text = "";
+
+        }
+
+        /// <summary>
+        /// Filtre sur le genre
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbxComDvdGenres_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxComDvdGenres.SelectedIndex >= 0)
+            {
+                txbComDvdTitreRecherche.Text = "";
+                txbComDvdNumRecherche.Text = "";
+                Genre genre = (Genre)cbxComDvdGenres.SelectedItem;
+                List<Dvd> Dvd = lesComDvd.FindAll(x => x.Genre.Equals(genre.Libelle));
+                RemplirComDvdListe(Dvd);
+                cbxComDvdRayons.SelectedIndex = -1;
+                cbxComDvdPublics.SelectedIndex = -1;
+            }
+        }
+
+        /// <summary>
+        /// Filtre sur la catégorie de public
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbxComDvdPublics_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxComDvdPublics.SelectedIndex >= 0)
+            {
+                txbComDvdTitreRecherche.Text = "";
+                txbComDvdNumRecherche.Text = "";
+                Public lePublic = (Public)cbxComDvdPublics.SelectedItem;
+                List<Dvd> Dvd = lesComDvd.FindAll(x => x.Public.Equals(lePublic.Libelle));
+                RemplirDvdListe(Dvd);
+                cbxComDvdRayons.SelectedIndex = -1;
+                cbxComDvdGenres.SelectedIndex = -1;
+            }
+        }
+
+        /// <summary>
+        /// Filtre sur le rayon
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbxComDvdRayons_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxComDvdRayons.SelectedIndex >= 0)
+            {
+                txbComDvdTitreRecherche.Text = "";
+                txbComDvdNumRecherche.Text = "";
+                Rayon rayon = (Rayon)cbxComDvdRayons.SelectedItem;
+                List<Dvd> Dvd = lesComDvd.FindAll(x => x.Rayon.Equals(rayon.Libelle));
+                RemplirComDvdListe(Dvd);
+                cbxComDvdGenres.SelectedIndex = -1;
+                cbxComDvdPublics.SelectedIndex = -1;
+            }
+        }
+
+        /// <summary>
+        /// Sur la sélection d'une ligne ou cellule dans le grid
+        /// affichage des informations du dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        
+
+        /// <summary>
+        /// Sur le clic du bouton d'annulation, affichage de la liste complète des Dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnDvdComAnnulPublics_Click(object sender, EventArgs e)
+        {
+            RemplirComDvdListeComplete();
+        }
+
+        /// <summary>
+        /// Sur le clic du bouton d'annulation, affichage de la liste complète des Dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnComDvdAnnulRayons_Click(object sender, EventArgs e)
+        {
+            RemplirComDvdListeComplete();
+        }
+
+        /// <summary>
+        /// Sur le clic du bouton d'annulation, affichage de la liste complète des Dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnComDvdAnnulGenres_Click(object sender, EventArgs e)
+        {
+            RemplirComDvdListeComplete();
+        }
+
+        /// <summary>
+        /// Affichage de la liste complète des Dvd
+        /// et annulation de toutes les recherches et filtres
+        /// </summary>
+        private void RemplirComDvdListeComplete()
+        {
+            RemplirComDvdListe(lesComDvd);
+            VideComDvdZones();
+        }
+
+        ///<summary>
+        ///Recupere et affiche les commandes d'un dvd
+        /// </summary>
+        /// <param name="dvd"></param>
+        private void AfficherCommandeDvdInfos(Dvd dvd)
+        {
+            string idDvd = dvd.Id;
+            VideComDvdInfos();
+            Console.WriteLine("test appel de methode");
+            lesCommandes = controller.GetCommandesDvd(idDvd);
+            GrpDvdCommande.Text = dvd.Titre + " de " + dvd.Realisateur;
+            Console.WriteLine("lesCommandes.count = " + lesCommandes.Count.ToString());
+            if (lesCommandes.Count == 0)
+                VideComDvdInfos();
+            RemplirCommandeDvdListe(lesCommandes);
+
+        }
+
+        /// <summary>
+        /// vide les zones de recherche et de filtre
+        /// </summary>
+        private void VideComDvdZones()
+        {
+            cbxComDvdGenres.SelectedIndex = -1;
+            cbxComDvdRayons.SelectedIndex = -1;
+            cbxComDvdPublics.SelectedIndex = -1;
+            txbComDvdNumRecherche.Text = "";
+            txbComDvdTitreRecherche.Text = "";
+        }
+
+        /// <summary>
+        /// configure l'interface en fonction de la procédure événementielle requise
+        /// </summary>
+        /// <param name="modif"></param>
+        private void CommandeDvdEnCoursDeModif(bool modif)
+        {
+            BtnAjouterDvdCom.Enabled = !modif;
+            BtnSupprimerDvdCom.Enabled = !modif;
+            BtnModifierDvdCom.Enabled = !modif;
+            BtnAnnulerDvdCom.Enabled = modif;
+            BtnValiderDvdCom.Enabled = modif;
+            txbComDvdTitre.ReadOnly = !modif;
+            txbComDvdRealisateur.ReadOnly = !modif;
+            txbComDvdSynopsis.ReadOnly = !modif;
+            cbxComDvdPublicInfos.Enabled = modif;
+            txbComDvdDuree.ReadOnly = !modif;
+            cbxComDvdGenreInfos.Enabled = modif;
+            cbxComDvdRayonInfos.Enabled = modif;
+            txbComDvdImage.ReadOnly = !modif;
+            dgvComDvdListe.Enabled = !modif;
+            txbComDvdNumero.ReadOnly = true;
+            txbComDvdNumero.ReadOnly = true;
+            dgvComDvdListe.Enabled = !modif;
+            dgvCommandeDvd.Enabled = !modif;
+            txbCommandeDvdNumero.ReadOnly = true;
+            dtpCommandeDvdDate.Enabled = !modif;
+            txbCommandeDvdMontant.Enabled = !modif;
+            txbCommandeDvdNbExemplaire.Enabled = !modif;
+            txbCommandeDvdId.Enabled = !modif;
+            ajouterBool = false;
+        }
+
+        /// <summary>
+        /// lance la procédure d'ajout d'une commande de dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnComAjouterDvd_Click(object sender, EventArgs e)
+        {
+            CommandeDvdEnCoursDeModif(true);
+            txbComDvdNumero.ReadOnly = false;
+            VideComDvdInfos();
+        }
+
+        /// <summary>
+        /// lance la procédure de modification de la commande du DVD sélectionné
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnComModifierDvd_Click(object sender, EventArgs e)
+        {
+            CommandeDvdEnCoursDeModif(true);
+        }
+
+        ///<summary>
+        ///Supprime une commande de Dvd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSupprimerDvdCom_Click(object sender, EventArgs e)
+        {
+            CommandeDocument commandeDocument = (CommandeDocument)bdgComDvdListe[bdgComDvdListe.Position];
+            if (dgvCommandeDvd.CurrentCell != null && txbCommandeDvdNumero.Text != "")
+            {
+                if (commandeDocument.IdSuivi > 2)
+                {
+                    MessageBox.Show("Une commande livrée ou reglé ne peut pas etre supprimée");
+
+                }
+                else if (MessageBox.Show($"Êtes vous sur de vouloir supprimer la commande n° {commandeDocument.Id} concernant" +
+                    $" {lesComDvd.Find(o => o.Id == commandeDocument.IdLivreDvd).Titre} ?", "validation suppression", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    if (controller.SupprimerLivreDvdCom(commandeDocument))
+                    {
+                        try
+                        {
+                            Dvd dvd = (Dvd)bdgComDvdListe.List[bdgComDvdListe.Position];
+                            AfficherCommandeDvdInfos(dvd);
+                            txbCommandeDvdNumero.Text = dvd.Id;
+                        }
+                        catch
+                        {
+                            VideComDvdZones();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erreur");
+                    }
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("Veuillez saisir une commande");
+            }
+        }
+
+        ///<summary>
+        ///Annule la modification ou l'ajout en cours
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAnnulerDvdCom_Click(object sender, EventArgs e)
+        {
+            ajouterBool = false;
+            RemplirComboSuivi(controller.GetAllSuivis(), bdgCommandeEtatDvd, cbxCommandeDvdEtat);
+            CommandeDvdEnCoursDeModif(false);
+
+            try
+            {
+                CommandeDocument commandeDocument = (CommandeDocument)bdgCommandeListeDvd[bdgCommandeListeDvd.Position];
+                AfficherInfoCommandeDvd(commandeDocument);
+            }
+            catch
+            {
+                VideComDvdInfos();
+            }
+        }
+
+        ///<summary>
+        ///Valide la modification ou l'ajout en cours
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnValiderDvdCom_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Êtes-vous sur ?","oui ?",  MessageBoxButtons.YesNo) == DialogResult.OK)
+            {
+                string id = txbComDvdNumero.Text;
+                bool valide = false;
+                DateTime dateCommande = dtpCommandeDvdDate.Value;
+                float montant = -1;
+                int nbExemplaire = -1;
+                try
+                {
+                    montant = float.Parse(txbCommandeDvdMontant.Text);
+                }
+                catch
+                {
+                    MessageBox.Show("Le montant doit etre un chiffre a virgule.");
+
+                }
+                try
+                {
+                    nbExemplaire = int.Parse(txbCommandeDvdNbExemplaire.Text);
+                }
+                catch
+                {
+                    MessageBox.Show("Le nombre d'exemplaire doit etre un entier.");
+
+                }
+                string idLivreDvd = txbCommandeDvdId.Text;
+                int idSuivi = 0;
+                string etat = "";
+                Suivi suivi = (Suivi)cbxCommandeDvdEtat.SelectedItem;
+                if (suivi != null)
+                {
+                    idSuivi = suivi.Id;
+                    etat = suivi.Etat;
+                }
+                else
+                {
+                    MessageBox.Show("Veuillez selectionner un etat");
+                    if (montant != -1 && nbExemplaire != -1 && etat != "")
+                    {
+                        CommandeDocument commandeDvd = new CommandeDocument(id, dateCommande, montant, nbExemplaire, idLivreDvd, idSuivi, etat);
+                        if (!ajouterBool)
+                            valide = controller.ModifierLivreDvdCom(commandeDvd);
+                        else
+                            valide = controller.CreerLivreDvdCom(commandeDvd);
+                        if (valide)
+                        {
+                            if (!ajouterBool)
+                                RemplirComboSuivi(controller.GetAllSuivis(), bdgCommandeEtatDvd, cbxCommandeDvdEtat);
+                            CommandeDvdEnCoursDeModif(false);
+                            try
+                            {
+                                Dvd dvd = (Dvd)bdgCommandeListeDvd.List[bdgCommandeListeDvd.Position];
+                                AfficherCommandeDvdInfos(dvd);
+                                txbCommandeDvdId.Text = dvd.Id;
+                            }
+                            catch
+                            {
+                                VideDvdZones();
+                            }
+                        }
+                        else
+                            MessageBox.Show("Erreur");
+                    }
+                }
+            }
+        
+        }
+        /// <summary>
+        /// Tri sur les colonnes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvComDvdListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            VideComDvdZones();
+            string titreColonne = dgvComDvdListe.Columns[e.ColumnIndex].HeaderText;
+            List<Dvd> sortedList = new List<Dvd>();
+            switch (titreColonne)
+            {
+                case "Id":
+                    sortedList = lesComDvd.OrderBy(o => o.Id).ToList();
+                    break;
+                case "Titre":
+                    sortedList = lesComDvd.OrderBy(o => o.Titre).ToList();
+                    break;
+                case "Duree":
+                    sortedList = lesComDvd.OrderBy(o => o.Duree).ToList();
+                    break;
+                case "Genre":
+                    sortedList = lesComDvd.OrderBy(o => o.Genre).ToList();
+                    break;
+                case "Public":
+                    sortedList = lesComDvd.OrderBy(o => o.Public).ToList();
+                    break;
+                case "Rayon":
+                    sortedList = lesComDvd.OrderBy(o => o.Rayon).ToList();
+                    break;
+            }
+            RemplirDvdListe(sortedList);
+        }
+
+        /// <summary>
+        /// Sur la sélection d'une ligne ou cellule dans le grid
+        /// affichage du detaile de la commande
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvComDvdListe_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvCommandeDvd.CurrentCell != null)
+            {
+                try
+                {
+                    CommandeDocument commandeDocument = (CommandeDocument)bdgCommandeListeDvd[bdgCommandeListeDvd.Position];
+                    AfficherInfoCommandeDvd(commandeDocument);
+                     
+                }
+                catch
+                {
+                    
+                    VideComDvdInfos();
+                }
+            }
+            else
+            {
+                VideComDvdInfos();
+            }
+            if (dgvComDvdListe.CurrentCell != null)
+            {
+                try
+                {
+                    Dvd dvd = (Dvd)bdgComDvdListe.List[bdgComDvdListe.Position];
+                    AfficherCommandeDvdInfos(dvd);
+
+                }
+                catch
+                {
+                    VideComDvdZones();
+                }
+            }
+            else
+            {
+                VideComDvdInfos();
+            }
+        }
+
+
+        private void dgvCommandeDvd_SelectionChanged(object sender, EventArgs e)
+        {
+            if(dgvCommandeDvd.CurrentCell != null)
+            {
+                try
+                {
+                    CommandeDocument commandeDocument = (CommandeDocument)bdgCommandeListeDvd[bdgCommandeListeDvd.Position];
+                    AfficherInfoCommandeDvd(commandeDocument);
+                }
+                catch
+                {
+                    VideComDvdInfos();
+                }
+            }
+            else
+            {
+                VideComDvdInfos();
+            }
+        }
+        /// <summary>
+        /// Peret le tri sur le datagrid des commandes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvCommandeDvd_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (lesCommandesDvd.Count > 0 && dgvCommandeDvd != null)
+            {
+                VideComDvdInfos();
+                string titreColonne = dgvCommandeDvd.Columns[e.ColumnIndex].HeaderText;
+                List<CommandeDocument> sortedList = new List<CommandeDocument>();
+                switch (titreColonne)
+                {
+                    case "Id":
+                        sortedList = lesCommandesDvd.OrderBy(o => o.Id).ToList();
+                        break;
+                    case "DateCommande":
+                        sortedList = lesCommandesDvd.OrderBy(o => o.DateCommande).ToList();
+                        break;
+                    case "NbExemplaire":
+                        sortedList = lesCommandesDvd.OrderBy(o => o.NbExemplaire).ToList();
+                        break;
+                    case "Etat":
+                        sortedList = lesCommandesDvd.OrderBy(o => o.IdSuivi).ToList();
+                        break;
+                    case "Montant":
+                        sortedList = lesCommandesDvd.OrderBy(o => o.Montant).ToList();
+                        break;
+                }
+                RemplirCommandeDvdListe(sortedList);
+            }
+        }
+        #endregion
+
     }
 }

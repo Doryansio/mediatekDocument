@@ -263,6 +263,19 @@ namespace MediaTekDocuments.dal
             return lesCommandesLivres;
         }
 
+        ///<summary>
+        ///Retourne les commandes d'un dvd
+        /// </summary>
+        /// <param name="idDvd"></param>
+        /// <returns></returns>
+        public List<CommandeDocument> GetCommandesDvd(string idDvd)
+        {
+            string jsonIdDocument = convertToJson("idLivreDvd", idDvd);
+            List<CommandeDocument> lesCommandesDvd = TraitementRecup<CommandeDocument>(GET, "commandedocument/" + jsonIdDocument);
+            return lesCommandesDvd;
+        }
+
+
         /// <summary>
         /// Retourne les abonnements d'une revue
         /// </summary>

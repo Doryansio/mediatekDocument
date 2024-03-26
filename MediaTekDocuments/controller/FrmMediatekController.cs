@@ -425,6 +425,11 @@ namespace MediaTekDocuments.controller
             return access.GetCommandesLivres(idLivre);
         }
 
+        public List<CommandeDocument> GetCommandesDvd(string idDvd)
+        {
+            return access.GetCommandesDvd(idDvd);
+        }
+
         /// <summary>
         /// Retourne l'id max des commandes
         /// </summary>
@@ -468,7 +473,7 @@ namespace MediaTekDocuments.controller
         /// <param name="id"></param>
         /// <param name="nbExemplaire"></param>
         /// <param name="idLivreDvd"></param>
-        /// <param name="idsuivi"></param>
+        /// <param name="idSuivi"></param>
         /// <param name="verbose"></param>
         /// <returns></returns>
         public bool utilCommandeDocument(string id, DateTime dateCommande, double montant, int nbExemplaire,
@@ -508,7 +513,7 @@ namespace MediaTekDocuments.controller
         /// </summary>
         /// <param name="commandeLivreDvd"></param>
         /// <returns></returns>
-        public bool UpdateLivreDvdCom(CommandeDocument commandeLivreDvd)
+        public bool ModifierLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
             return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
                    commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "update");
