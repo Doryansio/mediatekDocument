@@ -18,5 +18,10 @@ namespace MediaTekDocuments.model
             this.Id = id;
             this.Etat = etat;
         }
+
+        public override string ToString()
+        {
+            return this.Etat;
+        }
     }
 }

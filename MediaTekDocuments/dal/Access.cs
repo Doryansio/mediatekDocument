@@ -173,7 +173,7 @@ namespace MediaTekDocuments.dal
         /// <returns></returns>
         public bool CreerEntite(string type, String jsonEntite)
         {
-            jsonEntite = jsonEntite.Replace(' ', '-');
+            
             try
             {
                 // récupération soit d'une liste vide (requête ok) soit de null (erreur)
@@ -195,7 +195,7 @@ namespace MediaTekDocuments.dal
         /// <returns></returns>
         public bool ModifierEntite(string type, string id, String jsonEntite)
         {
-            jsonEntite = jsonEntite.Replace(' ', '-');
+            
             try
             {
                 // récupération soit d'une liste vide (requête ok) soit de null (erreur)
@@ -216,7 +216,7 @@ namespace MediaTekDocuments.dal
         /// <returns></returns>
         public bool SupprimerEntite(string type, String jsonEntite)
         {
-            jsonEntite = jsonEntite.Replace(' ', '-');
+            
             try
             {
                 // récupération soit d'une liste vide (requête ok) soit de null (erreur)

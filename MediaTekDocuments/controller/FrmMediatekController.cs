@@ -234,7 +234,7 @@ namespace MediaTekDocuments.controller
             bool valide= true;
             if (!utilitDocument(livre.Id, livre.Titre, livre.Image, livre.IdRayon, livre.IdPublic, livre.IdGenre, "update"))
                 valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
+            
             if (!utilitLivre(livre.Id, livre.Isbn, livre.Auteur, livre.Collection, "update"))
                 valide = false;
 
@@ -251,10 +251,10 @@ namespace MediaTekDocuments.controller
             bool valide = true;
             if (!utilitLivre(livre.Id, livre.Isbn, livre.Auteur, livre.Collection, "delete"))
                 valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
+            
             if (!utilitDvdLivre(livre.Id, "delete"))
                 valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
+            
             if (!utilitDocument(livre.Id, livre.Titre, livre.Image, livre.IdRayon, livre.IdPublic, livre.IdGenre, "delete"))
                 valide = false;
 
@@ -575,7 +575,7 @@ namespace MediaTekDocuments.controller
         /// <summary>
         /// Creer un abonnement dans la bdd
         /// </summary>
-        /// <param name="commandeLivreDvd"></param>
+        /// <param name="abonnement"></param>
         /// <returns></returns>
         public bool CreerAbonnement(Abonnement abonnement)
         {
@@ -585,7 +585,7 @@ namespace MediaTekDocuments.controller
         /// <summary>
         /// Modifie un abonnement dans la bdd
         /// </summary>
-        /// <param name="commandeLivreDvd"></param>
+        /// <param name="abonnement"></param>
         /// <returns></returns>
         public bool UpdateAbonnement(Abonnement abonnement)
         {
