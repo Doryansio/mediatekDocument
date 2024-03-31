@@ -312,7 +312,7 @@ namespace MediaTekDocuments.dal
             List<T> liste = new List<T>();
             try
             {
-                Console.WriteLine("Traitement recup" + message);
+                Console.WriteLine("Traitement recup " + methode + " et " + message);
                 JObject retour = api.RecupDistant(methode, message);
                 // extraction du code retourné
                 String code = (String)retour["code"];

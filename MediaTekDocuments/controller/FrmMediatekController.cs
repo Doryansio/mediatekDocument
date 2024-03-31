@@ -64,134 +64,6 @@ namespace MediaTekDocuments.controller
 
         #endregion
 
-        #region Utilitaire
-
-        /// <summary>
-        /// Permets de gérer les demandes de requêtes HTML (post update delete) concernant
-        /// un document
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="titre"></param>
-        /// <param name="image"></param>
-        /// <param name="IdRayon"></param>
-        /// <param name="IdPublic"></param>
-        /// <param name="IdGenre"></param>
-        /// <param name="verbose"></param>
-        /// <returns></returns>
-        public bool utilitDocument(string id, string titre, string image, string IdRayon, string IdPublic, string IdGenre, string verbose)
-        {
-            Dictionary<string, string> dictDocument = new Dictionary<string, string>();
-            dictDocument.Add("id", id);
-            dictDocument.Add("titre", titre);
-            dictDocument.Add("image", image);
-            dictDocument.Add("idRayon", IdRayon);
-            dictDocument.Add("idPublic", IdPublic);
-            dictDocument.Add("idGenre", IdGenre);
-            if (verbose == "post")
-                return access.CreerEntite("document", JsonConvert.SerializeObject(dictDocument));
-            if (verbose == "update")
-                return access.ModifierEntite("document", id, JsonConvert.SerializeObject(dictDocument));
-            if (verbose == "delete")
-                return access.SupprimerEntite("document", JsonConvert.SerializeObject(dictDocument));
-            return false;
-        }
-
-        /// <summary>
-        /// Permets de gérer les demandes de requêtes HTML (post update delete) concernant
-        /// un livre_dvd
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="verbose"></param>
-        /// <returns></returns>
-        public bool utilitDvdLivre(string id, string verbose)
-        {
-            Dictionary<string, string> dictLivreDvd = new Dictionary<string, string>();
-            dictLivreDvd.Add("id", id);
-            if (verbose == "post")
-                return access.CreerEntite("livres_dvd", JsonConvert.SerializeObject(dictLivreDvd));
-            if (verbose == "delete")
-                return access.SupprimerEntite("livres_dvd", JsonConvert.SerializeObject(dictLivreDvd));
-            return false;
-        }
-
-        /// <summary>
-        /// Permets de gérer les demandes de requêtes HTML (post update delete) concernant
-        /// un livre
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="isbn"></param>
-        /// <param name="auteur"></param>
-        /// <param name="collection"></param>
-        /// <param name="verbose"></param>
-        /// <returns></returns>
-        public bool utilitLivre(string id, string isbn, string auteur, string collection, string verbose)
-        {
-            Dictionary<string, string> unLivre = new Dictionary<string, string>();
-            unLivre.Add("id", id);
-            unLivre.Add("ISBN", isbn);
-            unLivre.Add("auteur", auteur);
-            unLivre.Add("collection", collection);
-            if (verbose == "post")
-                return access.CreerEntite("livre", JsonConvert.SerializeObject(unLivre));
-            if (verbose == "update")
-                return access.ModifierEntite("livre", id, JsonConvert.SerializeObject(unLivre));
-            if (verbose == "delete")
-                return access.SupprimerEntite("livre", JsonConvert.SerializeObject(unLivre));
-            return false;
-        }
-
-        /// <summary>
-        /// Permets de gérer les demandes de requêtes post update delete concernant
-        /// un Dvd
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="synopsis"></param>
-        /// <param name="realisateur"></param>
-        /// <param name="duree"></param>
-        /// <param name="verbose"></param>
-        /// <returns></returns>
-        public bool utilitDvd(string id, string synopsis, string realisateur, int duree, string verbose)
-        {
-            Dictionary<string, object> unDvd = new Dictionary<string, object>();
-            unDvd.Add("id", id);
-            unDvd.Add("synopsis", synopsis);
-            unDvd.Add("realisateur", realisateur);
-            unDvd.Add("duree", duree);
-            if (verbose == "post")
-                return access.CreerEntite("dvd", JsonConvert.SerializeObject(unDvd));
-            if (verbose == "update")
-                return access.ModifierEntite("dvd", id, JsonConvert.SerializeObject(unDvd));
-            if (verbose == "delete")
-                return access.SupprimerEntite("dvd", JsonConvert.SerializeObject(unDvd));
-            return false;
-        }
-
-        /// <summary>
-        /// Permets de gérer les demandes de requêtes post update delete concernant
-        /// une revue
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="periodicite"></param>
-        /// <param name="delaiMiseADispo"></param>
-        /// <param name="verbose"></param>
-        /// <returns></returns>
-        public bool utilitRevue(string id, string periodicite, int delaiMiseADispo, string verbose)
-        {
-            Dictionary<string, object> uneRevue = new Dictionary<string, object>();
-            uneRevue.Add("id", id);
-            uneRevue.Add("periodicite", periodicite);
-            uneRevue.Add("delaiMiseADispo", delaiMiseADispo);
-            if (verbose == "post")
-                return access.CreerEntite("revue", JsonConvert.SerializeObject(uneRevue));
-            if (verbose == "update")
-                return access.ModifierEntite("revue", id, JsonConvert.SerializeObject(uneRevue));
-            if (verbose == "delete")
-                return access.SupprimerEntite("revue", JsonConvert.SerializeObject(uneRevue));
-            return false;
-        }
-
-        #endregion
-
         #region Livre
 
         /// <summary>
@@ -211,17 +83,7 @@ namespace MediaTekDocuments.controller
         /// <returns>true si oppration valide</returns>
         public bool CreerLivre(Livre livre)
         {
-            bool valide = true;
-            if (!utilitDocument(livre.Id, livre.Titre, livre.Image, livre.IdRayon, livre.IdPublic, livre.IdGenre, "post"))
-                valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
-            if (!utilitDvdLivre(livre.Id, "post"))
-                valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
-            if (!utilitLivre(livre.Id, livre.Isbn, livre.Auteur, livre.Collection, "post"))
-                valide = false;
-
-            return valide;
+            return access.CreerEntite("livre", JsonConvert.SerializeObject(livre));
         }
 
         /// <summary>
@@ -231,14 +93,7 @@ namespace MediaTekDocuments.controller
         /// <returns>true si oppration valide</returns>
         public bool ModifierLivre(Livre livre)
         {
-            bool valide= true;
-            if (!utilitDocument(livre.Id, livre.Titre, livre.Image, livre.IdRayon, livre.IdPublic, livre.IdGenre, "update"))
-                valide = false;
-            
-            if (!utilitLivre(livre.Id, livre.Isbn, livre.Auteur, livre.Collection, "update"))
-                valide = false;
-
-            return valide;
+            return access.ModifierEntite("livre", livre.Id, JsonConvert.SerializeObject(livre));
         }
 
         /// <summary>
@@ -248,17 +103,7 @@ namespace MediaTekDocuments.controller
         /// <returns>true si oppration valide</returns>
         public bool SupprimerLivre(Livre livre)
         {
-            bool valide = true;
-            if (!utilitLivre(livre.Id, livre.Isbn, livre.Auteur, livre.Collection, "delete"))
-                valide = false;
-            
-            if (!utilitDvdLivre(livre.Id, "delete"))
-                valide = false;
-            
-            if (!utilitDocument(livre.Id, livre.Titre, livre.Image, livre.IdRayon, livre.IdPublic, livre.IdGenre, "delete"))
-                valide = false;
-
-            return valide;
+            return access.SupprimerEntite("livre", JsonConvert.SerializeObject(livre));
         }
         #endregion
 
@@ -274,40 +119,23 @@ namespace MediaTekDocuments.controller
         }
 
         /// <summary>
-        /// creer un dvd dans la bdd
+        /// creer un dvd dans la BDD
         /// </summary>
         /// <param name="dvd"></param>
         /// <returns>true si oppration valide</returns>
         public bool CreerDvd(Dvd dvd)
         {
-            bool valide = true;
-            if (!utilitDocument(dvd.Id, dvd.Titre, dvd.Image, dvd.IdRayon, dvd.IdPublic, dvd.IdGenre, "post"))
-                valide = false;
-            if (!utilitDvdLivre(dvd.Id, "post"))
-                valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
-            if (!utilitDvd(dvd.Id, dvd.Synopsis, dvd.Realisateur, dvd.Duree, "post"))
-                valide = false;
-
-            return valide;
+            return access.CreerEntite("dvd", JsonConvert.SerializeObject(dvd));
         }
 
-
         /// <summary>
-        /// modifie un dvd dans la bdd
+        /// modifie un dvd dans la bddd
         /// </summary>
         /// <param name="dvd"></param>
         /// <returns>true si oppration valide</returns>
         public bool ModifierDvd(Dvd dvd)
         {
-            bool valide = true;
-            if (!utilitDocument(dvd.Id, dvd.Titre, dvd.Image, dvd.IdRayon, dvd.IdPublic, dvd.IdGenre, "update"))
-                valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
-            if (!utilitDvd(dvd.Id, dvd.Synopsis, dvd.Realisateur, dvd.Duree, "update"))
-                valide = false;
-
-            return valide;
+            return access.ModifierEntite("dvd", dvd.Id, JsonConvert.SerializeObject(dvd));
         }
 
         /// <summary>
@@ -317,16 +145,7 @@ namespace MediaTekDocuments.controller
         /// <returns>true si oppration valide</returns>
         public bool SupprimerDvd(Dvd dvd)
         {
-            bool valide = true;
-            if (!utilitDvd(dvd.Id, dvd.Synopsis, dvd.Realisateur, dvd.Duree, "delete"))
-                valide = false;
-            if (!utilitDvdLivre(dvd.Id, "delete"))
-                valide = false;
-            //Thread.Sleep(50) a garder pour passage en ligne de l'api ? (lag);
-            if (!utilitDocument(dvd.Id, dvd.Titre, dvd.Image, dvd.IdRayon, dvd.IdPublic, dvd.IdGenre, "delete"))
-                valide = false;
-
-            return valide;
+            return access.SupprimerEntite("livre", JsonConvert.SerializeObject(dvd));
         }
 
         #endregion
@@ -350,47 +169,27 @@ namespace MediaTekDocuments.controller
         /// <returns>true si oppration valide</returns>
         public bool CreerRevue(Revue revue)
         {
-            bool valide = true;
-            if (!utilitDocument(revue.Id, revue.Titre, revue.Image, revue.IdRayon, revue.IdPublic, revue.IdGenre, "post"))
-                valide = false;
-            
-            if (!utilitRevue(revue.Id, revue.Periodicite, revue.DelaiMiseADispo, "post"))
-                valide = false;
-
-            return valide;
+            return access.CreerEntite("revue", JsonConvert.SerializeObject(revue));
         }
 
         /// <summary>
-        /// modifie une revue dans la bdd
+        /// modifie une revue dans la bddd
         /// </summary>
         /// <param name="revue"></param>
         /// <returns>true si oppration valide</returns>
         public bool ModifierRevue(Revue revue)
         {
-            bool valide = true;
-            if (!utilitDocument(revue.Id, revue.Titre, revue.Image, revue.IdRayon, revue.IdPublic, revue.IdGenre, "update"))
-                valide = false;
-            
-            if (!utilitRevue(revue.Id, revue.Periodicite, revue.DelaiMiseADispo, "update"))
-                valide = false;
-
-            return valide;
+            return access.ModifierEntite("revue", revue.Id, JsonConvert.SerializeObject(revue));
         }
 
         /// <summary>
-        /// supprime une revue dans la bdd
+        /// supprime un revue dans la bdd
         /// </summary>
         /// <param name="revue"></param>
         /// <returns>true si oppration valide</returns>
         public bool SupprimerRevue(Revue revue)
         {
-            bool valide = true;
-            if (!utilitRevue(revue.Id, revue.Periodicite, revue.DelaiMiseADispo, "delete"))
-                valide = false;
-            if (!utilitDocument(revue.Id, revue.Titre, revue.Image, revue.IdRayon, revue.IdPublic, revue.IdGenre, "delete"))
-                valide = false;
-
-            return valide;
+            return access.SupprimerEntite("revue", JsonConvert.SerializeObject(revue));
         }
         #endregion
 
@@ -587,7 +386,7 @@ namespace MediaTekDocuments.controller
         /// </summary>
         /// <param name="abonnement"></param>
         /// <returns></returns>
-        public bool UpdateAbonnement(Abonnement abonnement)
+        public bool ModifierAbonnement(Abonnement abonnement)
         {
             return utilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "update");
         }
