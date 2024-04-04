@@ -29,7 +29,7 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabOngletsApplication = new System.Windows.Forms.TabControl();
+            this.tabControl = new System.Windows.Forms.TabControl();
             this.tabLivres = new System.Windows.Forms.TabPage();
             this.grpLivresInfos = new System.Windows.Forms.GroupBox();
             this.cbxLivresRayonInfos = new System.Windows.Forms.ComboBox();
@@ -356,7 +356,7 @@ namespace MediaTekDocuments.view
             this.label102 = new System.Windows.Forms.Label();
             this.label101 = new System.Windows.Forms.Label();
             this.label100 = new System.Windows.Forms.Label();
-            this.tabOngletsApplication.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.tabLivres.SuspendLayout();
             this.grpLivresInfos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pcbLivresImage)).BeginInit();
@@ -396,23 +396,23 @@ namespace MediaTekDocuments.view
             ((System.ComponentModel.ISupportInitialize)(this.dgvListeAbo)).BeginInit();
             this.SuspendLayout();
             // 
-            // tabOngletsApplication
+            // tabControl
             // 
-            this.tabOngletsApplication.Controls.Add(this.tabLivres);
-            this.tabOngletsApplication.Controls.Add(this.tabDvd);
-            this.tabOngletsApplication.Controls.Add(this.tabRevues);
-            this.tabOngletsApplication.Controls.Add(this.tabReceptionRevue);
-            this.tabOngletsApplication.Controls.Add(this.tabCommandeLivres);
-            this.tabOngletsApplication.Controls.Add(this.tabCommandeDvd);
-            this.tabOngletsApplication.Controls.Add(this.tabAbonnement);
-            this.tabOngletsApplication.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabOngletsApplication.ItemSize = new System.Drawing.Size(49, 18);
-            this.tabOngletsApplication.Location = new System.Drawing.Point(0, 0);
-            this.tabOngletsApplication.Name = "tabOngletsApplication";
-            this.tabOngletsApplication.SelectedIndex = 0;
-            this.tabOngletsApplication.Size = new System.Drawing.Size(884, 838);
-            this.tabOngletsApplication.TabIndex = 0;
-            this.tabOngletsApplication.Enter += new System.EventHandler(this.tabAbonnement_Enter);
+            this.tabControl.Controls.Add(this.tabLivres);
+            this.tabControl.Controls.Add(this.tabDvd);
+            this.tabControl.Controls.Add(this.tabRevues);
+            this.tabControl.Controls.Add(this.tabReceptionRevue);
+            this.tabControl.Controls.Add(this.tabCommandeLivres);
+            this.tabControl.Controls.Add(this.tabCommandeDvd);
+            this.tabControl.Controls.Add(this.tabAbonnement);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.ItemSize = new System.Drawing.Size(49, 18);
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(884, 838);
+            this.tabControl.TabIndex = 0;
+            this.tabControl.Enter += new System.EventHandler(this.tabAbonnement_Enter);
             // 
             // tabLivres
             // 
@@ -3816,10 +3816,11 @@ namespace MediaTekDocuments.view
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 838);
-            this.Controls.Add(this.tabOngletsApplication);
+            this.Controls.Add(this.tabControl);
             this.Name = "FrmMediatek";
             this.Text = "Gestion des documents de la médiathèque";
-            this.tabOngletsApplication.ResumeLayout(false);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.tabControl.ResumeLayout(false);
             this.tabLivres.ResumeLayout(false);
             this.grpLivresInfos.ResumeLayout(false);
             this.grpLivresInfos.PerformLayout();
@@ -3877,7 +3878,7 @@ namespace MediaTekDocuments.view
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabOngletsApplication;
+        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabRevues;
         private System.Windows.Forms.TabPage tabLivres;
         private System.Windows.Forms.TabPage tabDvd;

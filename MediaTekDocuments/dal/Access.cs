@@ -75,6 +75,25 @@ namespace MediaTekDocuments.dal
             return instance;
         }
 
+        ///<summary>
+        ///Methode pour avoir un utilisateur
+        ///<param name="mail"></param>
+        ///<param name="hash"></param>
+        /// </summary>
+        public Utilisateur GetLogin(string mail, string hash)
+        {
+            Dictionary<string, string> login = new Dictionary<string, string>();
+            login.Add("mail", mail);
+            login.Add("password", hash);
+            string mailHash = JsonConvert.SerializeObject(login);
+            List<Utilisateur> utilisateurs = TraitementRecup<Utilisateur>(GET, "utilisateur/" + mailHash);
+            if (utilisateurs.Count > 0)
+            {
+                return utilisateurs[0];
+            }
+            return null;
+        }
+
         /// <summary>
         /// Retourne tous les genres à partir de la BDD
         /// </summary>

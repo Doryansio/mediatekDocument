@@ -3,6 +3,7 @@ using MediaTekDocuments.model;
 using MediaTekDocuments.dal;
 using Newtonsoft.Json;
 using System;
+using MediaTekDocuments.view;
 
 namespace MediaTekDocuments.controller
 {
@@ -11,11 +12,16 @@ namespace MediaTekDocuments.controller
     /// </summary>
     class FrmMediatekController
     {
+
+
+        
         #region Commun
         /// <summary>
         /// Objet d'accès aux données
         /// </summary>
         private readonly Access access;
+
+       
 
         /// <summary>
         /// Récupération de l'instance unique d'accès aux données
@@ -25,6 +31,9 @@ namespace MediaTekDocuments.controller
             access = Access.GetInstance();
         }
 
+
+      
+        
         /// <summary>
         /// getter sur la liste des genres
         /// </summary>
@@ -60,6 +69,50 @@ namespace MediaTekDocuments.controller
         public List<Suivi> GetAllSuivis()
         {
             return access.GetAllSuivis();
+        }
+
+        /// <summary>
+        /// Retourne vrai ou faux si le service de l'utilisateur
+        /// est autorisé
+        /// </summary>
+        /// <param name="utilisateur"></param>
+        /// <returns></returns>
+        public bool verifDroitAccueil(Utilisateur utilisateur)
+        {
+            Console.WriteLine(utilisateur.Nom);
+            List<string> services = new List<string> { "compta", "biblio", "accueil" };
+            if (services.Contains(utilisateur.Service))
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Retourne vrai ou faux si le service de l'utilisateur
+        /// est autorisé
+        /// </summary>
+        /// <param name="utilisateur"></param>
+        /// <returns></returns>
+        public bool verifDroitModif(Utilisateur utilisateur)
+        {
+            Console.WriteLine(utilisateur.Nom);
+            List<string> services = new List<string> { "biblio", "accueil" };
+            if (services.Contains(utilisateur.Service))
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Retourne vrai ou faux si le service de l'utilisateur
+        /// est autorisé
+        /// </summary>
+        /// <param name="utilisateur"></param>
+        /// <returns></returns>
+        public bool verifCommande(Utilisateur utilisateur)
+        {
+            List<string> services = new List<string> { "biblio" };
+            if (services.Contains(utilisateur.Service))
+                return true;
+            return false;
         }
 
         #endregion
