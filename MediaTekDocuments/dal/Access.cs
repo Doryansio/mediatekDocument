@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
+using System.Windows.Forms;
 
 namespace MediaTekDocuments.dal
 {
@@ -87,12 +88,17 @@ namespace MediaTekDocuments.dal
             login.Add("password", hash);
             string mailHash = JsonConvert.SerializeObject(login);
             List<Utilisateur> utilisateurs = TraitementRecup<Utilisateur>(GET, "utilisateur/" + mailHash);
+            Console.WriteLine(utilisateurs.Count);
             if (utilisateurs.Count > 0)
             {
+                
                 return utilisateurs[0];
+                
             }
+            
             return null;
         }
+        
 
         /// <summary>
         /// Retourne tous les genres à partir de la BDD

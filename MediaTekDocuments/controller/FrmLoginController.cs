@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MediaTekDocuments.controller
 {
@@ -32,7 +33,7 @@ namespace MediaTekDocuments.controller
             access = Access.GetInstance();
         }
 
-        private void init()
+        private void Init()
         {
             mediatek = new FrmMediatek(utilisateur);
             mediatek.Show();
@@ -41,16 +42,16 @@ namespace MediaTekDocuments.controller
         public bool GetLogin(string mail, string password)
         {
             password = "Mediatek" + password;
-            string hash = "test123";
+            string hash = "";
             using(SHA256 sha256Hash = SHA256.Create())
             {
                 hash = GetHash(sha256Hash, password);
-            }
-            
+                //MessageBox.Show("Le mot de passe " + password + " donne " + hash);
+            }           
             utilisateur = access.GetLogin(mail, hash);
             if(utilisateur != null)
             {
-                init();
+                Init();
                 return true;
             }
             return false;

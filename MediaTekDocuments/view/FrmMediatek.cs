@@ -3374,7 +3374,7 @@ namespace MediaTekDocuments.view
                 dgvListeAboCommande.Columns["idRevue"].Visible = false;
                 dgvListeAboCommande.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
                 dgvListeAboCommande.Columns["id"].DisplayIndex = 0;
-                dgvListeAboCommande.Columns["dateComande"].DisplayIndex = 1;
+                dgvListeAboCommande.Columns["dateCommande"].DisplayIndex = 1;
                 dgvListeAboCommande.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
             else

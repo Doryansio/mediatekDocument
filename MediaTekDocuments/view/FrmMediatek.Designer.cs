@@ -2707,6 +2707,7 @@ namespace MediaTekDocuments.view
             this.tabCommandeDvd.TabIndex = 6;
             this.tabCommandeDvd.Text = "Commande de Dvd";
             this.tabCommandeDvd.UseVisualStyleBackColor = true;
+            this.tabCommandeDvd.Enter += new System.EventHandler(this.TabCommandeDvd_Enter);
             // 
             // GrpDvdCommande
             // 
