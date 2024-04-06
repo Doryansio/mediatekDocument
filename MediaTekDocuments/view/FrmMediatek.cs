@@ -32,7 +32,7 @@ namespace MediaTekDocuments.view
             InitializeComponent();
             this.controller = new FrmMediatekController();
             this.utilisateur = lutilisateur;
-            verifDroitAcceuil(lutilisateur);
+            VerifDroitAcceuil(lutilisateur);
         }
 
         /// <summary>
@@ -90,9 +90,9 @@ namespace MediaTekDocuments.view
         /// Ouvre une MessageBox au lancement de FrmMediatek.cs
         /// si des abonnements sont proches de se terminer
         /// </summary>
-        private void afficherAlerteAbo()
+        private void AfficherAlerteAbo()
         {
-            if (controller.verifCommande(utilisateur))
+            if (controller.VerifCommande(utilisateur))
             {
                 bool interupteur = false;
                 List<Revue> revues = controller.GetAllRevues();
@@ -118,9 +118,9 @@ namespace MediaTekDocuments.view
         /// Verifie les droit d'un uitilisateur
         /// </summary>
         /// <param name="lutilisateur"></param>
-        private void verifDroitAcceuil(Utilisateur lutilisateur)
+        private void VerifDroitAcceuil(Utilisateur lutilisateur)
         {
-            if (!controller.verifDroitAccueil(lutilisateur))
+            if (!controller.VerifDroitAccueil(lutilisateur))
             {
                 MessageBox.Show("Droit insuffisant");
                 Application.Exit();
@@ -161,12 +161,12 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayonInfo, cbxLivresRayonInfos);
             
             RemplirLivresListeComplete();
-            if (controller.verifDroitModif(utilisateur))
+            if (controller.VerifDroitModif(utilisateur))
             {
                 LivreEnCoursDeModif(false);
                 if (premierLoad)
                 {
-                    afficherAlerteAbo();
+                    AfficherAlerteAbo();
                     premierLoad = false;
                 }
             }
@@ -482,7 +482,7 @@ namespace MediaTekDocuments.view
         {
             LivreEnCoursDeModif(true);
             ajouterBool = true;
-            string id = plusUnIdString(controller.getNbLivreMax());
+            string id = plusUnIdString(controller.GetNbLivreMax());
             if (id == "0")
                 id = "00001";
             txbLivresNumero.Text = id;
@@ -660,7 +660,7 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllPublics(), bdgDvdPublicInfo, cbxDvdPublicInfos);
             RemplirComboCategorie(controller.GetAllRayons(), bdgDvdRayonInfo, cbxDvdRayonInfos);
             RemplirDvdListeComplete();
-            if (controller.verifDroitModif(utilisateur))
+            if (controller.VerifDroitModif(utilisateur))
             {
                 DvdEnCoursDeModif(false);
             }
@@ -1151,7 +1151,7 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllRayons(), bdgRevuesRayonInfos, cbxRevuesRayonInfos);
             RemplirRevuesListeComplete();
 
-            if (controller.verifDroitModif(utilisateur))
+            if (controller.VerifDroitModif(utilisateur))
             {
                 RevueEnCoursDeModif(false);
             }
@@ -1463,7 +1463,7 @@ namespace MediaTekDocuments.view
         {
             RevueEnCoursDeModif(true);
             ajouterBool = true;
-            string id = plusUnIdString(controller.getNbRevueMax());
+            string id = plusUnIdString(controller.GetNbRevueMax());
             if (id == "1")
                 id = "10001";
             txbRevuesNumero.Text = id;
@@ -1906,7 +1906,7 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void TabCommandeLivres_Enter(object sender, EventArgs e)
         {
-            if (!controller.verifCommande(utilisateur))
+            if (!controller.VerifCommande(utilisateur))
             {
                 MessageBox.Show("Droits insuffisant pour acceder a cette fonctionnaité");
                 tabControl.SelectedIndex = 0;
@@ -2273,7 +2273,7 @@ namespace MediaTekDocuments.view
             CommandeLivreEnCoursDeModif(true);
             txbCommandeNumeroLivre.ReadOnly = true;
             ajouterBool = true;
-            string id = plusUnIdString(controller.getNbCommandeMax());
+            string id = plusUnIdString(controller.GetNbCommandeMax());
             if (id == "1")
                 id = "00001";
             VideLivresComInfos();
@@ -2615,7 +2615,7 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void TabCommandeDvd_Enter(object sender, EventArgs e)
         {
-            if (!controller.verifCommande(utilisateur))
+            if (!controller.VerifCommande(utilisateur))
             {
                 MessageBox.Show("Droit insuffisant pour acceder a cette fonctionalité");
                 tabControl.SelectedIndex = 0;
@@ -2981,7 +2981,7 @@ namespace MediaTekDocuments.view
             CommandeDvdEnCoursDeModif(true);
             txbCommandeDvdNumero.ReadOnly = true;
             ajouterBool = true;
-            string id = plusUnIdString(controller.getNbCommandeMax());
+            string id = plusUnIdString(controller.GetNbCommandeMax());
             if (id == "1")
                 id = "00001";
             VideDvdComInfos();
@@ -3321,7 +3321,7 @@ namespace MediaTekDocuments.view
         private void tabAbonnement_Enter(object sender, EventArgs e)
         {
 
-            if (!controller.verifCommande(utilisateur))
+            if (!controller.VerifCommande(utilisateur))
             {
                 MessageBox.Show("Droit insuffisant pour acceder a cette fonctionalité");
                 tabControl.SelectedIndex = 0;
@@ -3702,7 +3702,7 @@ namespace MediaTekDocuments.view
         {
             AbonnementEnCoursDeModif(true);
             ajouterBool = true;
-            string id = plusUnIdString(controller.getNbCommandeMax());
+            string id = plusUnIdString(controller.GetNbCommandeMax());
             if (id == "1")
                 id = "00001";
             VideAboCommandeInfo();

@@ -18,7 +18,11 @@ namespace MediaTekDocuments.dal
         /// <summary>
         /// adresse de l'API
         /// </summary>
-        private static readonly string uriApi = "http://localhost/rest_mediatekdocuments/";
+        private static readonly string uriApiName = "MediatekDocuments.Properties.Settings.mediatekConnectionString";
+        ///<summary>
+        ///Mot de passe et Login de L'api
+        /// </summary>
+        private static readonly string authenticationName = "MediatekDocuments.Properties.Settings.mediatekAuthenticationString";
         /// <summary>
         /// instance unique de la classe
         /// </summary>
@@ -50,11 +54,13 @@ namespace MediaTekDocuments.dal
         /// </summary>
         private Access()
         {
-            String authenticationString;
+            
             try
             {
-                authenticationString = "admin:adminpwd";
+                String authenticationString = GetAuthenticationString(authenticationName);
+                String uriApi = GetAuthenticationString(uriApiName);
                 api = ApiRest.GetInstance(uriApi, authenticationString);
+               
             }
             catch (Exception e)
             {
@@ -77,15 +83,30 @@ namespace MediaTekDocuments.dal
         }
 
         ///<summary>
+        ///Recuperation de la chaine de connexion
+        /// </summary>
+        ///<param name="name"></param>
+        static string GetAuthenticationString(string name)
+        {
+            string returnValue = null;
+            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[name];
+            if (settings != null)
+                returnValue = settings.ConnectionString;
+            return returnValue;
+        }
+
+        ///<summary>
         ///Methode pour avoir un utilisateur
         ///<param name="mail"></param>
         ///<param name="hash"></param>
         /// </summary>
         public Utilisateur GetLogin(string mail, string hash)
         {
-            Dictionary<string, string> login = new Dictionary<string, string>();
-            login.Add("mail", mail);
-            login.Add("password", hash);
+            Dictionary<string, string> login = new Dictionary<string, string>
+            {
+                { "mail", mail },
+                { "password", hash }
+            };
             string mailHash = JsonConvert.SerializeObject(login);
             List<Utilisateur> utilisateurs = TraitementRecup<Utilisateur>(GET, "utilisateur/" + mailHash);
             Console.WriteLine(utilisateurs.Count);
@@ -319,7 +340,7 @@ namespace MediaTekDocuments.dal
         /// </summary>
         /// <param name="maxIndex"></param>
         /// <returns></returns>
-        public string getMaxIndex(string maxIndex)
+        public string GetMaxIndex(string maxIndex)
         {
             List<Categorie> maxindex = TraitementRecup<Categorie>(GET, maxIndex);
             return maxindex[0].Id;
