@@ -21,7 +21,7 @@ namespace MediaTekDocuments.controller
 
         private Utilisateur utilisateur = null;
 
-        private FrmMediatek mediatek;
+        
 
 
 
@@ -33,9 +33,13 @@ namespace MediaTekDocuments.controller
             access = Access.GetInstance();
         }
 
+
+        /// <summary>
+        /// Lance la vue principale
+        /// </summary>
         private void Init()
         {
-            mediatek = new FrmMediatek(utilisateur);
+             FrmMediatek mediatek = new FrmMediatek(utilisateur);
             mediatek.Show();
         }
 
@@ -46,7 +50,7 @@ namespace MediaTekDocuments.controller
             using(SHA256 sha256Hash = SHA256.Create())
             {
                 hash = GetHash(sha256Hash, password);
-                //MessageBox.Show("Le mot de passe " + password + " donne " + hash);
+                
             }           
             utilisateur = access.GetLogin(mail, hash);
             if(utilisateur != null)

@@ -20,7 +20,7 @@ namespace MediaTekDocuments.view
         private readonly BindingSource bdgGenres = new BindingSource();
         private readonly BindingSource bdgPublics = new BindingSource();
         private readonly BindingSource bdgRayons = new BindingSource();
-        private Utilisateur utilisateur;
+        private readonly Utilisateur utilisateur;
         private bool ajouterBool = false;
         private bool premierLoad = false;
 
@@ -104,7 +104,9 @@ namespace MediaTekDocuments.view
                             && (o.DateFinAbonnement >= DateTime.Now));
                     if (abonnements.Count > 0)
                     {
-                        alerteRevues += "  -" + revue.Titre + "\n";
+
+                        alerteRevues = string.Concat(alerteRevues, " -" + revue.Titre + "\n");
+
                         interupteur = true;
                     }
 
@@ -153,12 +155,12 @@ namespace MediaTekDocuments.view
         private void TabLivres_Enter(object sender, EventArgs e)
         {
             lesLivres = controller.GetAllLivres();
-            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxLivresGenres);
-            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxLivresPublics);
-            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxLivresRayons);
-            RemplirComboCategorie(controller.GetAllGenres(), bdgGenresInfo, cbxLivresGenreInfos);
-            RemplirComboCategorie(controller.GetAllPublics(), bdgPublicInfo, cbxLivresPublicInfos);
-            RemplirComboCategorie(controller.GetAllRayons(), bdgRayonInfo, cbxLivresRayonInfos);
+            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, CbxLivresGenres);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, CbxLivresPublics);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, CbxLivresRayons);
+            RemplirComboCategorie(controller.GetAllGenres(), bdgGenresInfo, CbxLivresGenreInfos);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgPublicInfo, CbxLivresPublicInfos);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgRayonInfo, CbxLivresRayonInfos);
             
             RemplirLivresListeComplete();
             if (controller.VerifDroitModif(utilisateur))
@@ -186,9 +188,9 @@ namespace MediaTekDocuments.view
             BtnSupprimerLivres.Enabled = false;
             BtnValiderChoix.Enabled = false;
             BtnAnnulerChoix.Enabled = false;
-            cbxLivresGenreInfos.Enabled = false;
-            cbxLivresPublicInfos.Enabled = false;
-            cbxLivresRayonInfos.Enabled = false;
+            CbxLivresGenreInfos.Enabled = false;
+            CbxLivresPublicInfos.Enabled = false;
+            CbxLivresRayonInfos.Enabled = false;
         }
 
         /// <summary>
@@ -198,15 +200,15 @@ namespace MediaTekDocuments.view
         private void RemplirLivresListe(List<Livre> livres)
         {
             bdgLivresListe.DataSource = livres;
-            dgvLivresListe.DataSource = bdgLivresListe;
-            dgvLivresListe.Columns["isbn"].Visible = false;
-            dgvLivresListe.Columns["idRayon"].Visible = false;
-            dgvLivresListe.Columns["idGenre"].Visible = false;
-            dgvLivresListe.Columns["idPublic"].Visible = false;
-            dgvLivresListe.Columns["image"].Visible = false;
-            dgvLivresListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvLivresListe.Columns["id"].DisplayIndex = 0;
-            dgvLivresListe.Columns["titre"].DisplayIndex = 1;
+            DgvLivresListe.DataSource = bdgLivresListe;
+            DgvLivresListe.Columns["isbn"].Visible = false;
+            DgvLivresListe.Columns["idRayon"].Visible = false;
+            DgvLivresListe.Columns["idGenre"].Visible = false;
+            DgvLivresListe.Columns["idPublic"].Visible = false;
+            DgvLivresListe.Columns["image"].Visible = false;
+            DgvLivresListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            DgvLivresListe.Columns["id"].DisplayIndex = 0;
+            DgvLivresListe.Columns["titre"].DisplayIndex = 1;
         }
 
         /// <summary>
@@ -217,13 +219,13 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void BtnLivresNumRecherche_Click(object sender, EventArgs e)
         {
-            if (!txbLivresNumRecherche.Text.Equals(""))
+            if (!TxbLivresNumRecherche.Text.Equals(""))
             {
-                txbLivresTitreRecherche.Text = "";
-                cbxLivresGenres.SelectedIndex = -1;
-                cbxLivresRayons.SelectedIndex = -1;
-                cbxLivresPublics.SelectedIndex = -1;
-                Livre livre = lesLivres.Find(x => x.Id.Equals(txbLivresNumRecherche.Text));
+                TxbLivresTitreRecherche.Text = "";
+                CbxLivresGenres.SelectedIndex = -1;
+                CbxLivresRayons.SelectedIndex = -1;
+                CbxLivresPublics.SelectedIndex = -1;
+                Livre livre = lesLivres.Find(x => x.Id.Equals(TxbLivresNumRecherche.Text));
                 if (livre != null)
                 {
                     List<Livre> livres = new List<Livre>() { livre };
@@ -250,21 +252,21 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void TxbLivresTitreRecherche_TextChanged(object sender, EventArgs e)
         {
-            if (!txbLivresTitreRecherche.Text.Equals(""))
+            if (!TxbLivresTitreRecherche.Text.Equals(""))
             {
-                cbxLivresGenres.SelectedIndex = -1;
-                cbxLivresRayons.SelectedIndex = -1;
-                cbxLivresPublics.SelectedIndex = -1;
-                txbLivresNumRecherche.Text = "";
+                CbxLivresGenres.SelectedIndex = -1;
+                CbxLivresRayons.SelectedIndex = -1;
+                CbxLivresPublics.SelectedIndex = -1;
+                TxbLivresNumRecherche.Text = "";
                 List<Livre> lesLivresParTitre;
-                lesLivresParTitre = lesLivres.FindAll(x => x.Titre.ToLower().Contains(txbLivresTitreRecherche.Text.ToLower()));
+                lesLivresParTitre = lesLivres.FindAll(x => x.Titre.ToLower().Contains(TxbLivresTitreRecherche.Text.ToLower()));
                 RemplirLivresListe(lesLivresParTitre);
             }
             else
             {
                 // si la zone de saisie est vide et aucun élément combo sélectionné, réaffichage de la liste complète
-                if (cbxLivresGenres.SelectedIndex < 0 && cbxLivresPublics.SelectedIndex < 0 && cbxLivresRayons.SelectedIndex < 0
-                    && txbLivresNumRecherche.Text.Equals(""))
+                if (CbxLivresGenres.SelectedIndex < 0 && CbxLivresPublics.SelectedIndex < 0 && CbxLivresRayons.SelectedIndex < 0
+                    && TxbLivresNumRecherche.Text.Equals(""))
                 {
                     RemplirLivresListeComplete();
                 }
@@ -277,23 +279,23 @@ namespace MediaTekDocuments.view
         /// <param name="livre">le livre</param>
         private void AfficheLivresInfos(Livre livre)
         {
-            txbLivresAuteur.Text = livre.Auteur;
-            txbLivresCollection.Text = livre.Collection;
-            txbLivresImage.Text = livre.Image;
-            txbLivresIsbn.Text = livre.Isbn;
-            txbLivresNumero.Text = livre.Id;
-            cbxLivresGenreInfos.SelectedIndex = cbxLivresGenreInfos.FindString(livre.Genre);
-            cbxLivresPublicInfos.SelectedIndex = cbxLivresPublicInfos.FindString(livre.Public);
-            cbxLivresRayonInfos.SelectedIndex = cbxLivresRayonInfos.FindString(livre.Rayon);
-            txbLivresTitre.Text = livre.Titre;
+            TxbLivresAuteur.Text = livre.Auteur;
+            TxbLivresCollection.Text = livre.Collection;
+            TxbLivresImage.Text = livre.Image;
+            TxbLivresIsbn.Text = livre.Isbn;
+            TxbLivresNumero.Text = livre.Id;
+            CbxLivresGenreInfos.SelectedIndex = CbxLivresGenreInfos.FindString(livre.Genre);
+            CbxLivresPublicInfos.SelectedIndex = CbxLivresPublicInfos.FindString(livre.Public);
+            CbxLivresRayonInfos.SelectedIndex = CbxLivresRayonInfos.FindString(livre.Rayon);
+            TxbLivresTitre.Text = livre.Titre;
             string image = livre.Image;
             try
             {
-                pcbLivresImage.Image = Image.FromFile(image);
+                PcbLivresImage.Image = Image.FromFile(image);
             }
             catch
             {
-                pcbLivresImage.Image = null;
+                PcbLivresImage.Image = null;
             }
         }
 
@@ -302,16 +304,16 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void VideLivresInfos()
         {
-            txbLivresAuteur.Text = "";
-            txbLivresCollection.Text = "";
-            txbLivresImage.Text = "";
-            txbLivresIsbn.Text = "";
-            txbLivresNumero.Text = "";
-            cbxLivresGenreInfos.SelectedIndex = -1;
-            cbxLivresPublicInfos.SelectedIndex = -1;
-            cbxLivresRayonInfos.SelectedIndex = -1;
-            txbLivresTitre.Text = "";
-            pcbLivresImage.Image = null;
+            TxbLivresAuteur.Text = "";
+            TxbLivresCollection.Text = "";
+            TxbLivresImage.Text = "";
+            TxbLivresIsbn.Text = "";
+            TxbLivresNumero.Text = "";
+            CbxLivresGenreInfos.SelectedIndex = -1;
+            CbxLivresPublicInfos.SelectedIndex = -1;
+            CbxLivresRayonInfos.SelectedIndex = -1;
+            TxbLivresTitre.Text = "";
+            PcbLivresImage.Image = null;
         }
 
         /// <summary>
@@ -321,15 +323,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void CbxLivresGenres_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxLivresGenres.SelectedIndex >= 0)
+            if (CbxLivresGenres.SelectedIndex >= 0)
             {
-                txbLivresTitreRecherche.Text = "";
-                txbLivresNumRecherche.Text = "";
-                Genre genre = (Genre)cbxLivresGenres.SelectedItem;
+                TxbLivresTitreRecherche.Text = "";
+                TxbLivresNumRecherche.Text = "";
+                Genre genre = (Genre)CbxLivresGenres.SelectedItem;
                 List<Livre> livres = lesLivres.FindAll(x => x.Genre.Equals(genre.Libelle));
                 RemplirLivresListe(livres);
-                cbxLivresRayons.SelectedIndex = -1;
-                cbxLivresPublics.SelectedIndex = -1;
+                CbxLivresRayons.SelectedIndex = -1;
+                CbxLivresPublics.SelectedIndex = -1;
             }
         }
 
@@ -340,15 +342,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void CbxLivresPublics_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxLivresPublics.SelectedIndex >= 0)
+            if (CbxLivresPublics.SelectedIndex >= 0)
             {
-                txbLivresTitreRecherche.Text = "";
-                txbLivresNumRecherche.Text = "";
-                Public lePublic = (Public)cbxLivresPublics.SelectedItem;
+                TxbLivresTitreRecherche.Text = "";
+                TxbLivresNumRecherche.Text = "";
+                Public lePublic = (Public)CbxLivresPublics.SelectedItem;
                 List<Livre> livres = lesLivres.FindAll(x => x.Public.Equals(lePublic.Libelle));
                 RemplirLivresListe(livres);
-                cbxLivresRayons.SelectedIndex = -1;
-                cbxLivresGenres.SelectedIndex = -1;
+                CbxLivresRayons.SelectedIndex = -1;
+                CbxLivresGenres.SelectedIndex = -1;
             }
         }
 
@@ -359,15 +361,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void CbxLivresRayons_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxLivresRayons.SelectedIndex >= 0)
+            if (CbxLivresRayons.SelectedIndex >= 0)
             {
-                txbLivresTitreRecherche.Text = "";
-                txbLivresNumRecherche.Text = "";
-                Rayon rayon = (Rayon)cbxLivresRayons.SelectedItem;
+                TxbLivresTitreRecherche.Text = "";
+                TxbLivresNumRecherche.Text = "";
+                Rayon rayon = (Rayon)CbxLivresRayons.SelectedItem;
                 List<Livre> livres = lesLivres.FindAll(x => x.Rayon.Equals(rayon.Libelle));
                 RemplirLivresListe(livres);
-                cbxLivresGenres.SelectedIndex = -1;
-                cbxLivresPublics.SelectedIndex = -1;
+                CbxLivresGenres.SelectedIndex = -1;
+                CbxLivresPublics.SelectedIndex = -1;
             }
         }
 
@@ -379,7 +381,7 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void DgvLivresListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvLivresListe.CurrentCell != null)
+            if (DgvLivresListe.CurrentCell != null)
             {
                 try
                 {
@@ -442,11 +444,11 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void VideLivresZones()
         {
-            cbxLivresGenres.SelectedIndex = -1;
-            cbxLivresRayons.SelectedIndex = -1;
-            cbxLivresPublics.SelectedIndex = -1;
-            txbLivresNumRecherche.Text = "";
-            txbLivresTitreRecherche.Text = "";
+            CbxLivresGenres.SelectedIndex = -1;
+            CbxLivresRayons.SelectedIndex = -1;
+            CbxLivresPublics.SelectedIndex = -1;
+            TxbLivresNumRecherche.Text = "";
+            TxbLivresTitreRecherche.Text = "";
         }
 
         /// <summary>
@@ -460,16 +462,16 @@ namespace MediaTekDocuments.view
             BtnModifierLivres.Enabled = !modif;
             BtnAnnulerChoix.Enabled = modif;
             BtnValiderChoix.Enabled = modif;
-            txbLivresTitre.ReadOnly = !modif;
-            txbLivresAuteur.ReadOnly = !modif;
-            cbxLivresPublicInfos.Enabled = modif;
-            txbLivresIsbn.ReadOnly = !modif;
-            txbLivresCollection.ReadOnly = !modif;
-            cbxLivresGenreInfos.Enabled = modif;
-            cbxLivresRayonInfos.Enabled = modif;
-            txbLivresImage.ReadOnly = !modif;
-            txbLivresNumero.ReadOnly = true;
-            dgvLivresListe.Enabled = !modif;
+            TxbLivresTitre.ReadOnly = !modif;
+            TxbLivresAuteur.ReadOnly = !modif;
+            CbxLivresPublicInfos.Enabled = modif;
+            TxbLivresIsbn.ReadOnly = !modif;
+            TxbLivresCollection.ReadOnly = !modif;
+            CbxLivresGenreInfos.Enabled = modif;
+            CbxLivresRayonInfos.Enabled = modif;
+            TxbLivresImage.ReadOnly = !modif;
+            TxbLivresNumero.ReadOnly = true;
+            DgvLivresListe.Enabled = !modif;
             ajouterBool = false;
         }
 
@@ -485,15 +487,15 @@ namespace MediaTekDocuments.view
             string id = plusUnIdString(controller.GetNbLivreMax());
             if (id == "0")
                 id = "00001";
-            txbLivresNumero.Text = id;
-            txbLivresTitre.Text = "";
-            txbLivresAuteur.Text = "";
-            cbxLivresPublicInfos.SelectedIndex = -1;
-            txbLivresCollection.Text = "";
-            cbxLivresGenreInfos.SelectedIndex = -1;
-            cbxLivresRayonInfos.SelectedIndex = -1;
-            txbLivresImage.Text = "";
-            txbLivresIsbn.Text = "";
+            TxbLivresNumero.Text = id;
+            TxbLivresTitre.Text = "";
+            TxbLivresAuteur.Text = "";
+            CbxLivresPublicInfos.SelectedIndex = -1;
+            TxbLivresCollection.Text = "";
+            CbxLivresGenreInfos.SelectedIndex = -1;
+            CbxLivresRayonInfos.SelectedIndex = -1;
+            TxbLivresImage.Text = "";
+            TxbLivresIsbn.Text = "";
         
     }
 
@@ -553,27 +555,27 @@ namespace MediaTekDocuments.view
             bool checkValid;
             if (MessageBox.Show("Etes vous sur ?", "oui ?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                string id = txbLivresNumero.Text;
-                Genre unGenre = (Genre)cbxLivresGenreInfos.SelectedItem;
-                Public unPublic = (Public)cbxLivresPublicInfos.SelectedItem;
-                Rayon unRayon = (Rayon)cbxLivresRayonInfos.SelectedItem;
+                string id = TxbLivresNumero.Text;
+                Genre unGenre = (Genre)CbxLivresGenreInfos.SelectedItem;
+                Public unPublic = (Public)CbxLivresPublicInfos.SelectedItem;
+                Rayon unRayon = (Rayon)CbxLivresRayonInfos.SelectedItem;
                 if (unGenre == null)
                     MessageBox.Show("Genre invalide");
                 if (unPublic == null)
                     MessageBox.Show("Public invalide");
                 if (unRayon == null)
                     MessageBox.Show("Rayon invalide");
-                string titre = txbLivresTitre.Text;
-                string image = txbLivresImage.Text;
-                string isbn = txbLivresIsbn.Text;
-                string auteur = txbLivresAuteur.Text;
-                string collection = txbLivresCollection.Text;
-                string idGenre = (unGenre == null) ? null : unGenre.Id;
-                string genre = (unGenre == null) ? null : unGenre.Libelle;
-                string idPublic = (unPublic == null) ? null : unPublic.Id;
-                string lePublic = (unPublic == null) ? null : unPublic.Libelle;
-                string idRayon = (unRayon == null) ? null : unRayon.Id;
-                string rayon = (unRayon == null) ? null : unRayon.Libelle;
+                string titre = TxbLivresTitre.Text;
+                string image = TxbLivresImage.Text;
+                string isbn = TxbLivresIsbn.Text;
+                string auteur = TxbLivresAuteur.Text;
+                string collection = TxbLivresCollection.Text;
+                string idGenre = unGenre?.Id;
+                string genre = unGenre?.Libelle;
+                string idPublic = unPublic?.Id;
+                string lePublic = unPublic?.Libelle;
+                string idRayon = unRayon?.Id;
+                string rayon = unRayon?.Libelle;
                 if (titre != "" && auteur != "" && genre != null && unPublic != null)
                 {
                     Livre livre = new Livre(id, titre, image, isbn, auteur, collection, idGenre, genre, idPublic, lePublic, idRayon, rayon);
@@ -589,7 +591,7 @@ namespace MediaTekDocuments.view
                     }
                     else
                     {
-                        if (txbLivresNumero.ReadOnly)
+                        if (TxbLivresNumero.ReadOnly)
                             MessageBox.Show("numéro de publication déjà existant", "Erreur");
                         else
                             MessageBox.Show("Erreur");
@@ -607,7 +609,7 @@ namespace MediaTekDocuments.view
         private void DgvLivresListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             VideLivresZones();
-            string titreColonne = dgvLivresListe.Columns[e.ColumnIndex].HeaderText;
+            string titreColonne = DgvLivresListe.Columns[e.ColumnIndex].HeaderText;
             List<Livre> sortedList = new List<Livre>();
             switch (titreColonne)
             {
@@ -653,12 +655,12 @@ namespace MediaTekDocuments.view
         private void tabDvd_Enter(object sender, EventArgs e)
         {
             lesDvd = controller.GetAllDvd();
-            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxDvdGenres);
-            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxDvdPublics);
-            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxDvdRayons);
-            RemplirComboCategorie(controller.GetAllGenres(), bdgDvdGenreInfos, cbxDvdGenreInfos);
-            RemplirComboCategorie(controller.GetAllPublics(), bdgDvdPublicInfo, cbxDvdPublicInfos);
-            RemplirComboCategorie(controller.GetAllRayons(), bdgDvdRayonInfo, cbxDvdRayonInfos);
+            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, CbxDvdGenres);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, CbxDvdPublics);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, CbxDvdRayons);
+            RemplirComboCategorie(controller.GetAllGenres(), bdgDvdGenreInfos, CbxDvdGenreInfos);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgDvdPublicInfo, CbxDvdPublicInfos);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgDvdRayonInfo, CbxDvdRayonInfos);
             RemplirDvdListeComplete();
             if (controller.VerifDroitModif(utilisateur))
             {
@@ -677,15 +679,15 @@ namespace MediaTekDocuments.view
         private void RemplirDvdListe(List<Dvd> Dvds)
         {
             bdgDvdListe.DataSource = Dvds;
-            dgvDvdListe.DataSource = bdgDvdListe;
-            dgvDvdListe.Columns["idRayon"].Visible = false;
-            dgvDvdListe.Columns["idGenre"].Visible = false;
-            dgvDvdListe.Columns["idPublic"].Visible = false;
-            dgvDvdListe.Columns["image"].Visible = false;
-            dgvDvdListe.Columns["synopsis"].Visible = false;
-            dgvDvdListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvDvdListe.Columns["id"].DisplayIndex = 0;
-            dgvDvdListe.Columns["titre"].DisplayIndex = 1;
+            DgvDvdListe.DataSource = bdgDvdListe;
+            DgvDvdListe.Columns["idRayon"].Visible = false;
+            DgvDvdListe.Columns["idGenre"].Visible = false;
+            DgvDvdListe.Columns["idPublic"].Visible = false;
+            DgvDvdListe.Columns["image"].Visible = false;
+            DgvDvdListe.Columns["synopsis"].Visible = false;
+            DgvDvdListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            DgvDvdListe.Columns["id"].DisplayIndex = 0;
+            DgvDvdListe.Columns["titre"].DisplayIndex = 1;
         }
 
         /// <summary>
@@ -696,13 +698,13 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void btnDvdNumRecherche_Click(object sender, EventArgs e)
         {
-            if (!txbDvdNumRecherche.Text.Equals(""))
+            if (!TxbDvdNumRecherche.Text.Equals(""))
             {
-                txbDvdTitreRecherche.Text = "";
-                cbxDvdGenres.SelectedIndex = -1;
-                cbxDvdRayons.SelectedIndex = -1;
-                cbxDvdPublics.SelectedIndex = -1;
-                Dvd dvd = lesDvd.Find(x => x.Id.Equals(txbDvdNumRecherche.Text));
+                TxbDvdTitreRecherche.Text = "";
+                CbxDvdGenres.SelectedIndex = -1;
+                CbxDvdRayons.SelectedIndex = -1;
+                CbxDvdPublics.SelectedIndex = -1;
+                Dvd dvd = lesDvd.Find(x => x.Id.Equals(TxbDvdNumRecherche.Text));
                 if (dvd != null)
                 {
                     List<Dvd> Dvd = new List<Dvd>() { dvd };
@@ -729,21 +731,21 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void txbDvdTitreRecherche_TextChanged(object sender, EventArgs e)
         {
-            if (!txbDvdTitreRecherche.Text.Equals(""))
+            if (!TxbDvdTitreRecherche.Text.Equals(""))
             {
-                cbxDvdGenres.SelectedIndex = -1;
-                cbxDvdRayons.SelectedIndex = -1;
-                cbxDvdPublics.SelectedIndex = -1;
-                txbDvdNumRecherche.Text = "";
+                CbxDvdGenres.SelectedIndex = -1;
+                CbxDvdRayons.SelectedIndex = -1;
+                CbxDvdPublics.SelectedIndex = -1;
+                TxbDvdNumRecherche.Text = "";
                 List<Dvd> lesDvdParTitre;
-                lesDvdParTitre = lesDvd.FindAll(x => x.Titre.ToLower().Contains(txbDvdTitreRecherche.Text.ToLower()));
+                lesDvdParTitre = lesDvd.FindAll(x => x.Titre.ToLower().Contains(TxbDvdTitreRecherche.Text.ToLower()));
                 RemplirDvdListe(lesDvdParTitre);
             }
             else
             {
                 // si la zone de saisie est vide et aucun élément combo sélectionné, réaffichage de la liste complète
-                if (cbxDvdGenres.SelectedIndex < 0 && cbxDvdPublics.SelectedIndex < 0 && cbxDvdRayons.SelectedIndex < 0
-                    && txbDvdNumRecherche.Text.Equals(""))
+                if (CbxDvdGenres.SelectedIndex < 0 && CbxDvdPublics.SelectedIndex < 0 && CbxDvdRayons.SelectedIndex < 0
+                    && TxbDvdNumRecherche.Text.Equals(""))
                 {
                     RemplirDvdListeComplete();
                 }
@@ -756,23 +758,23 @@ namespace MediaTekDocuments.view
         /// <param name="dvd">le dvd</param>
         private void AfficheDvdInfos(Dvd dvd)
         {
-            txbDvdRealisateur.Text = dvd.Realisateur;
+            TxbDvdRealisateur.Text = dvd.Realisateur;
             txbDvdSynopsis.Text = dvd.Synopsis;
-            txbDvdImage.Text = dvd.Image;
-            txbDvdDuree.Text = dvd.Duree.ToString();
-            txbDvdNumero.Text = dvd.Id;
-            cbxDvdGenreInfos.SelectedIndex = cbxDvdGenreInfos.FindString(dvd.Genre);
-            cbxDvdPublicInfos.SelectedIndex = cbxDvdPublicInfos.FindString(dvd.Public);
-            cbxDvdRayonInfos.SelectedIndex = cbxDvdRayonInfos.FindString(dvd.Rayon);
-            txbDvdTitre.Text = dvd.Titre;
+            TxbDvdImage.Text = dvd.Image;
+            TxbDvdDuree.Text = dvd.Duree.ToString();
+            TxbDvdNumero.Text = dvd.Id;
+            CbxDvdGenreInfos.SelectedIndex = CbxDvdGenreInfos.FindString(dvd.Genre);
+            CbxDvdPublicInfos.SelectedIndex = CbxDvdPublicInfos.FindString(dvd.Public);
+            CbxDvdRayonInfos.SelectedIndex = CbxDvdRayonInfos.FindString(dvd.Rayon);
+            TxbDvdTitre.Text = dvd.Titre;
             string image = dvd.Image;
             try
             {
-                pcbDvdImage.Image = Image.FromFile(image);
+                PcbDvdImage.Image = Image.FromFile(image);
             }
             catch
             {
-                pcbDvdImage.Image = null;
+                PcbDvdImage.Image = null;
             }
         }
 
@@ -781,16 +783,16 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void VideDvdInfos()
         {
-            txbDvdRealisateur.Text = "";
+            TxbDvdRealisateur.Text = "";
             txbDvdSynopsis.Text = "";
-            txbDvdImage.Text = "";
-            txbDvdDuree.Text = "";
-            txbDvdNumero.Text = "";
-            cbxDvdGenreInfos.SelectedIndex = -1;
-            cbxDvdPublicInfos.SelectedIndex = -1;
-            cbxDvdRayonInfos.SelectedIndex = -1;
-            txbDvdTitre.Text = "";
-            pcbDvdImage.Image = null;
+            TxbDvdImage.Text = "";
+            TxbDvdDuree.Text = "";
+            TxbDvdNumero.Text = "";
+            CbxDvdGenreInfos.SelectedIndex = -1;
+            CbxDvdPublicInfos.SelectedIndex = -1;
+            CbxDvdRayonInfos.SelectedIndex = -1;
+            TxbDvdTitre.Text = "";
+            PcbDvdImage.Image = null;
         }
 
         /// <summary>
@@ -800,15 +802,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void cbxDvdGenres_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxDvdGenres.SelectedIndex >= 0)
+            if (CbxDvdGenres.SelectedIndex >= 0)
             {
-                txbDvdTitreRecherche.Text = "";
-                txbDvdNumRecherche.Text = "";
-                Genre genre = (Genre)cbxDvdGenres.SelectedItem;
+                TxbDvdTitreRecherche.Text = "";
+                TxbDvdNumRecherche.Text = "";
+                Genre genre = (Genre)CbxDvdGenres.SelectedItem;
                 List<Dvd> Dvd = lesDvd.FindAll(x => x.Genre.Equals(genre.Libelle));
                 RemplirDvdListe(Dvd);
-                cbxDvdRayons.SelectedIndex = -1;
-                cbxDvdPublics.SelectedIndex = -1;
+                CbxDvdRayons.SelectedIndex = -1;
+                CbxDvdPublics.SelectedIndex = -1;
             }
         }
 
@@ -819,15 +821,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void cbxDvdPublics_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxDvdPublics.SelectedIndex >= 0)
+            if (CbxDvdPublics.SelectedIndex >= 0)
             {
-                txbDvdTitreRecherche.Text = "";
-                txbDvdNumRecherche.Text = "";
-                Public lePublic = (Public)cbxDvdPublics.SelectedItem;
+                TxbDvdTitreRecherche.Text = "";
+                TxbDvdNumRecherche.Text = "";
+                Public lePublic = (Public)CbxDvdPublics.SelectedItem;
                 List<Dvd> Dvd = lesDvd.FindAll(x => x.Public.Equals(lePublic.Libelle));
                 RemplirDvdListe(Dvd);
-                cbxDvdRayons.SelectedIndex = -1;
-                cbxDvdGenres.SelectedIndex = -1;
+                CbxDvdRayons.SelectedIndex = -1;
+                CbxDvdGenres.SelectedIndex = -1;
             }
         }
 
@@ -838,15 +840,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void cbxDvdRayons_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxDvdRayons.SelectedIndex >= 0)
+            if (CbxDvdRayons.SelectedIndex >= 0)
             {
-                txbDvdTitreRecherche.Text = "";
-                txbDvdNumRecherche.Text = "";
-                Rayon rayon = (Rayon)cbxDvdRayons.SelectedItem;
+                TxbDvdTitreRecherche.Text = "";
+                TxbDvdNumRecherche.Text = "";
+                Rayon rayon = (Rayon)CbxDvdRayons.SelectedItem;
                 List<Dvd> Dvd = lesDvd.FindAll(x => x.Rayon.Equals(rayon.Libelle));
                 RemplirDvdListe(Dvd);
-                cbxDvdGenres.SelectedIndex = -1;
-                cbxDvdPublics.SelectedIndex = -1;
+                CbxDvdGenres.SelectedIndex = -1;
+                CbxDvdPublics.SelectedIndex = -1;
             }
         }
 
@@ -858,7 +860,7 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void dgvDvdListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvDvdListe.CurrentCell != null)
+            if (DgvDvdListe.CurrentCell != null)
             {
                 try
                 {
@@ -921,11 +923,11 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void VideDvdZones()
         {
-            cbxDvdGenres.SelectedIndex = -1;
-            cbxDvdRayons.SelectedIndex = -1;
-            cbxDvdPublics.SelectedIndex = -1;
-            txbDvdNumRecherche.Text = "";
-            txbDvdTitreRecherche.Text = "";
+            CbxDvdGenres.SelectedIndex = -1;
+            CbxDvdRayons.SelectedIndex = -1;
+            CbxDvdPublics.SelectedIndex = -1;
+            TxbDvdNumRecherche.Text = "";
+            TxbDvdTitreRecherche.Text = "";
         }
 
         /// <summary>
@@ -939,16 +941,16 @@ namespace MediaTekDocuments.view
             BtnModifierDvd.Enabled = !modif;
             BtnAnnulerChoixDvd.Enabled = modif;
             BtnValiderChoixDvd.Enabled = modif;
-            txbDvdTitre.ReadOnly = !modif;
-            txbDvdRealisateur.ReadOnly = !modif;
+            TxbDvdTitre.ReadOnly = !modif;
+            TxbDvdRealisateur.ReadOnly = !modif;
             txbDvdSynopsis.ReadOnly = !modif;
-            cbxDvdPublicInfos.Enabled = modif;
-            txbDvdDuree.ReadOnly = !modif;
-            cbxDvdGenreInfos.Enabled = modif;
-            cbxDvdRayonInfos.Enabled = modif;
-            txbDvdImage.ReadOnly = !modif;
-            dgvDvdListe.Enabled = !modif;
-            txbDvdNumero.ReadOnly = true;
+            CbxDvdPublicInfos.Enabled = modif;
+            TxbDvdDuree.ReadOnly = !modif;
+            CbxDvdGenreInfos.Enabled = modif;
+            CbxDvdRayonInfos.Enabled = modif;
+            TxbDvdImage.ReadOnly = !modif;
+            DgvDvdListe.Enabled = !modif;
+            TxbDvdNumero.ReadOnly = true;
         }
 
         ///<summary>
@@ -961,9 +963,9 @@ namespace MediaTekDocuments.view
             BtnSupprimerDvd.Enabled = false;
             BtnValiderChoixDvd.Enabled = false;
             BtnAnnulerChoixDvd.Enabled = false;
-            cbxDvdGenreInfos.Enabled = false;
-            cbxDvdPublicInfos.Enabled = false;
-            cbxDvdRayonInfos.Enabled = false;
+            CbxDvdGenreInfos.Enabled = false;
+            CbxDvdPublicInfos.Enabled = false;
+            CbxDvdRayonInfos.Enabled = false;
         }
 
         /// <summary>
@@ -974,7 +976,7 @@ namespace MediaTekDocuments.view
         private void BtnAjouterDvd_Click(object sender, EventArgs e)
         {
             DvdEnCoursDeModif(true);
-            txbDvdNumero.ReadOnly = false;
+            TxbDvdNumero.ReadOnly = false;
             VideDvdInfos();
         }
 
@@ -1033,41 +1035,41 @@ namespace MediaTekDocuments.view
             bool Valide;
             if (MessageBox.Show("Etes vous sur ?", "oui ?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                string id = txbDvdNumero.Text; ;
+                string id = TxbDvdNumero.Text;
                 int? a = null;  // version simplifié de nullabe <int> a
 
                 try
                 {
-                    a = int.Parse(txbDvdNumero.Text);
+                    a = int.Parse(TxbDvdNumero.Text);
                 }
                 catch
                 {
                     MessageBox.Show("Le Numéro de document doit etre un entier");
                 }
-                Genre unGenre = (Genre)cbxDvdGenreInfos.SelectedItem;
-                Public unPublic = (Public)cbxDvdPublicInfos.SelectedItem;
-                Rayon unRayon = (Rayon)cbxDvdRayonInfos.SelectedItem;
+                Genre unGenre = (Genre)CbxDvdGenreInfos.SelectedItem;
+                Public unPublic = (Public)CbxDvdPublicInfos.SelectedItem;
+                Rayon unRayon = (Rayon)CbxDvdRayonInfos.SelectedItem;
                 if (unGenre == null)
                     MessageBox.Show("Genre invalide");
                 if (unPublic == null)
                     MessageBox.Show("Public invalide");
                 if (unRayon == null)
                     MessageBox.Show("Rayon invalide");
-                string titre = txbDvdTitre.Text;
-                string image = txbDvdImage.Text;
-                int duree = (txbDvdDuree.Text == "") ? 0 : int.Parse(txbDvdDuree.Text);
-                string realisateur = txbDvdRealisateur.Text;
+                string titre = TxbDvdTitre.Text;
+                string image = TxbDvdImage.Text;
+                int duree = (TxbDvdDuree.Text == "") ? 0 : int.Parse(TxbDvdDuree.Text);
+                string realisateur = TxbDvdRealisateur.Text;
                 string synopsis = txbDvdSynopsis.Text;
-                string idGenre = (unGenre == null) ? null : unGenre.Id;
-                string genre = (unGenre == null) ? null : unGenre.Libelle;
-                string idPublic = (unPublic == null) ? null : unPublic.Id;
-                string lePublic = (unPublic == null) ? null : unPublic.Libelle;
-                string idRayon = (unRayon == null) ? null : unRayon.Id;
-                string rayon = (unRayon == null) ? null : unRayon.Libelle;
+                string idGenre = unGenre?.Id;
+                string genre = unGenre?.Libelle;
+                string idPublic = unPublic?.Id;
+                string lePublic = unPublic?.Libelle;
+                string idRayon = unRayon?.Id;
+                string rayon = unRayon?.Libelle;
                 if (a != null && titre != "" && realisateur != "" && genre != null && unPublic != null)
                 {
                     Dvd dvd = new Dvd(id, titre, image, duree, realisateur, synopsis, idGenre, genre, idPublic, lePublic, idRayon, rayon);
-                    if (txbDvdNumero.ReadOnly)  // si on est en  modification
+                    if (TxbDvdNumero.ReadOnly)  // si on est en  modification
                         Valide = controller.ModifierDvd(dvd);
                     else    // si on est en creation
                         Valide = controller.CreerDvd(dvd);
@@ -1079,7 +1081,7 @@ namespace MediaTekDocuments.view
                     }
                     else
                     {
-                        if (txbDvdNumero.ReadOnly)
+                        if (TxbDvdNumero.ReadOnly)
                             MessageBox.Show("numéro de publication déjà existant", "Erreur");
                         else
                             MessageBox.Show("Erreur");
@@ -1097,7 +1099,7 @@ namespace MediaTekDocuments.view
         private void dgvDvdListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             VideDvdZones();
-            string titreColonne = dgvDvdListe.Columns[e.ColumnIndex].HeaderText;
+            string titreColonne = DgvDvdListe.Columns[e.ColumnIndex].HeaderText;
             List<Dvd> sortedList = new List<Dvd>();
             switch (titreColonne)
             {
@@ -1143,12 +1145,12 @@ namespace MediaTekDocuments.view
         private void tabRevues_Enter(object sender, EventArgs e)
         {
             lesRevues = controller.GetAllRevues();
-            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, cbxRevuesGenres);
-            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, cbxRevuesPublics);
-            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxRevuesRayons);
-            RemplirComboCategorie(controller.GetAllGenres(), bdgRevuesGenreInfos, cbxRevuesGenreInfos);
-            RemplirComboCategorie(controller.GetAllPublics(), bdgRevuesPublicInfos, cbxRevuesPublicInfos);
-            RemplirComboCategorie(controller.GetAllRayons(), bdgRevuesRayonInfos, cbxRevuesRayonInfos);
+            RemplirComboCategorie(controller.GetAllGenres(), bdgGenres, CbxRevuesGenres);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgPublics, CbxRevuesPublics);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, CbxRevuesRayons);
+            RemplirComboCategorie(controller.GetAllGenres(), bdgRevuesGenreInfos, CbxRevuesGenreInfos);
+            RemplirComboCategorie(controller.GetAllPublics(), bdgRevuesPublicInfos, CbxRevuesPublicInfos);
+            RemplirComboCategorie(controller.GetAllRayons(), bdgRevuesRayonInfos, CbxRevuesRayonInfos);
             RemplirRevuesListeComplete();
 
             if (controller.VerifDroitModif(utilisateur))
@@ -1168,14 +1170,14 @@ namespace MediaTekDocuments.view
         private void RemplirRevuesListe(List<Revue> revues)
         {
             bdgRevuesListe.DataSource = revues;
-            dgvRevuesListe.DataSource = bdgRevuesListe;
-            dgvRevuesListe.Columns["idRayon"].Visible = false;
-            dgvRevuesListe.Columns["idGenre"].Visible = false;
-            dgvRevuesListe.Columns["idPublic"].Visible = false;
-            dgvRevuesListe.Columns["image"].Visible = false;
-            dgvRevuesListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dgvRevuesListe.Columns["id"].DisplayIndex = 0;
-            dgvRevuesListe.Columns["titre"].DisplayIndex = 1;
+            DgvRevuesListe.DataSource = bdgRevuesListe;
+            DgvRevuesListe.Columns["idRayon"].Visible = false;
+            DgvRevuesListe.Columns["idGenre"].Visible = false;
+            DgvRevuesListe.Columns["idPublic"].Visible = false;
+            DgvRevuesListe.Columns["image"].Visible = false;
+            DgvRevuesListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            DgvRevuesListe.Columns["id"].DisplayIndex = 0;
+            DgvRevuesListe.Columns["titre"].DisplayIndex = 1;
         }
 
         /// <summary>
@@ -1186,13 +1188,13 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void btnRevuesNumRecherche_Click(object sender, EventArgs e)
         {
-            if (!txbRevuesNumRecherche.Text.Equals(""))
+            if (!TxbRevuesNumRecherche.Text.Equals(""))
             {
-                txbRevuesTitreRecherche.Text = "";
-                cbxRevuesGenres.SelectedIndex = -1;
-                cbxRevuesRayons.SelectedIndex = -1;
-                cbxRevuesPublics.SelectedIndex = -1;
-                Revue revue = lesRevues.Find(x => x.Id.Equals(txbRevuesNumRecherche.Text));
+                TxbRevuesTitreRecherche.Text = "";
+                CbxRevuesGenres.SelectedIndex = -1;
+                CbxRevuesRayons.SelectedIndex = -1;
+                CbxRevuesPublics.SelectedIndex = -1;
+                Revue revue = lesRevues.Find(x => x.Id.Equals(TxbRevuesNumRecherche.Text));
                 if (revue != null)
                 {
                     List<Revue> revues = new List<Revue>() { revue };
@@ -1219,21 +1221,21 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void txbRevuesTitreRecherche_TextChanged(object sender, EventArgs e)
         {
-            if (!txbRevuesTitreRecherche.Text.Equals(""))
+            if (!TxbRevuesTitreRecherche.Text.Equals(""))
             {
-                cbxRevuesGenres.SelectedIndex = -1;
-                cbxRevuesRayons.SelectedIndex = -1;
-                cbxRevuesPublics.SelectedIndex = -1;
-                txbRevuesNumRecherche.Text = "";
+                CbxRevuesGenres.SelectedIndex = -1;
+                CbxRevuesRayons.SelectedIndex = -1;
+                CbxRevuesPublics.SelectedIndex = -1;
+                TxbRevuesNumRecherche.Text = "";
                 List<Revue> lesRevuesParTitre;
-                lesRevuesParTitre = lesRevues.FindAll(x => x.Titre.ToLower().Contains(txbRevuesTitreRecherche.Text.ToLower()));
+                lesRevuesParTitre = lesRevues.FindAll(x => x.Titre.ToLower().Contains(TxbRevuesTitreRecherche.Text.ToLower()));
                 RemplirRevuesListe(lesRevuesParTitre);
             }
             else
             {
                 // si la zone de saisie est vide et aucun élément combo sélectionné, réaffichage de la liste complète
-                if (cbxRevuesGenres.SelectedIndex < 0 && cbxRevuesPublics.SelectedIndex < 0 && cbxRevuesRayons.SelectedIndex < 0
-                    && txbRevuesNumRecherche.Text.Equals(""))
+                if (CbxRevuesGenres.SelectedIndex < 0 && CbxRevuesPublics.SelectedIndex < 0 && CbxRevuesRayons.SelectedIndex < 0
+                    && TxbRevuesNumRecherche.Text.Equals(""))
                 {
                     RemplirRevuesListeComplete();
                 }
@@ -1246,22 +1248,22 @@ namespace MediaTekDocuments.view
         /// <param name="revue">la revue</param>
         private void AfficheRevuesInfos(Revue revue)
         {
-            txbRevuesPeriodicite.Text = revue.Periodicite;
-            txbRevuesImage.Text = revue.Image;
-            txbRevuesDateMiseADispo.Text = revue.DelaiMiseADispo.ToString();
-            txbRevuesNumero.Text = revue.Id;
-            cbxRevuesGenreInfos.SelectedIndex = cbxRevuesGenreInfos.FindString(revue.Genre);
-            cbxRevuesPublicInfos.SelectedIndex = cbxRevuesPublicInfos.FindString(revue.Public);
-            cbxRevuesRayonInfos.SelectedIndex = cbxRevuesRayonInfos.FindString(revue.Rayon);
-            txbRevuesTitre.Text = revue.Titre;
+            TxbRevuesPeriodicite.Text = revue.Periodicite;
+            TxbRevuesImage.Text = revue.Image;
+            TxbRevuesDateMiseADispo.Text = revue.DelaiMiseADispo.ToString();
+            TxbRevuesNumero.Text = revue.Id;
+            CbxRevuesGenreInfos.SelectedIndex = CbxRevuesGenreInfos.FindString(revue.Genre);
+            CbxRevuesPublicInfos.SelectedIndex = CbxRevuesPublicInfos.FindString(revue.Public);
+            CbxRevuesRayonInfos.SelectedIndex = CbxRevuesRayonInfos.FindString(revue.Rayon);
+            TxbRevuesTitre.Text = revue.Titre;
             string image = revue.Image;
             try
             {
-                pcbRevuesImage.Image = Image.FromFile(image);
+                PcbRevuesImage.Image = Image.FromFile(image);
             }
             catch
             {
-                pcbRevuesImage.Image = null;
+                PcbRevuesImage.Image = null;
             }
         }
 
@@ -1270,15 +1272,15 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void VideRevuesInfos()
         {
-            txbRevuesPeriodicite.Text = "";
-            txbRevuesImage.Text = "";
-            txbRevuesDateMiseADispo.Text = "";
-            txbRevuesNumero.Text = "";
-            cbxRevuesGenreInfos.SelectedIndex = -1;
-            cbxRevuesPublicInfos.SelectedIndex = -1;
-            cbxRevuesRayonInfos.SelectedIndex = -1;
-            txbRevuesTitre.Text = "";
-            pcbRevuesImage.Image = null;
+            TxbRevuesPeriodicite.Text = "";
+            TxbRevuesImage.Text = "";
+            TxbRevuesDateMiseADispo.Text = "";
+            TxbRevuesNumero.Text = "";
+            CbxRevuesGenreInfos.SelectedIndex = -1;
+            CbxRevuesPublicInfos.SelectedIndex = -1;
+            CbxRevuesRayonInfos.SelectedIndex = -1;
+            TxbRevuesTitre.Text = "";
+            PcbRevuesImage.Image = null;
         }
 
         /// <summary>
@@ -1288,15 +1290,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void cbxRevuesGenres_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxRevuesGenres.SelectedIndex >= 0)
+            if (CbxRevuesGenres.SelectedIndex >= 0)
             {
-                txbRevuesTitreRecherche.Text = "";
-                txbRevuesNumRecherche.Text = "";
-                Genre genre = (Genre)cbxRevuesGenres.SelectedItem;
+                TxbRevuesTitreRecherche.Text = "";
+                TxbRevuesNumRecherche.Text = "";
+                Genre genre = (Genre)CbxRevuesGenres.SelectedItem;
                 List<Revue> revues = lesRevues.FindAll(x => x.Genre.Equals(genre.Libelle));
                 RemplirRevuesListe(revues);
-                cbxRevuesRayons.SelectedIndex = -1;
-                cbxRevuesPublics.SelectedIndex = -1;
+                CbxRevuesRayons.SelectedIndex = -1;
+                CbxRevuesPublics.SelectedIndex = -1;
             }
         }
 
@@ -1307,15 +1309,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void cbxRevuesPublics_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxRevuesPublics.SelectedIndex >= 0)
+            if (CbxRevuesPublics.SelectedIndex >= 0)
             {
-                txbRevuesTitreRecherche.Text = "";
-                txbRevuesNumRecherche.Text = "";
-                Public lePublic = (Public)cbxRevuesPublics.SelectedItem;
+                TxbRevuesTitreRecherche.Text = "";
+                TxbRevuesNumRecherche.Text = "";
+                Public lePublic = (Public)CbxRevuesPublics.SelectedItem;
                 List<Revue> revues = lesRevues.FindAll(x => x.Public.Equals(lePublic.Libelle));
                 RemplirRevuesListe(revues);
-                cbxRevuesRayons.SelectedIndex = -1;
-                cbxRevuesGenres.SelectedIndex = -1;
+                CbxRevuesRayons.SelectedIndex = -1;
+                CbxRevuesGenres.SelectedIndex = -1;
             }
         }
 
@@ -1326,15 +1328,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void cbxRevuesRayons_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbxRevuesRayons.SelectedIndex >= 0)
+            if (CbxRevuesRayons.SelectedIndex >= 0)
             {
-                txbRevuesTitreRecherche.Text = "";
-                txbRevuesNumRecherche.Text = "";
-                Rayon rayon = (Rayon)cbxRevuesRayons.SelectedItem;
+                TxbRevuesTitreRecherche.Text = "";
+                TxbRevuesNumRecherche.Text = "";
+                Rayon rayon = (Rayon)CbxRevuesRayons.SelectedItem;
                 List<Revue> revues = lesRevues.FindAll(x => x.Rayon.Equals(rayon.Libelle));
                 RemplirRevuesListe(revues);
-                cbxRevuesGenres.SelectedIndex = -1;
-                cbxRevuesPublics.SelectedIndex = -1;
+                CbxRevuesGenres.SelectedIndex = -1;
+                CbxRevuesPublics.SelectedIndex = -1;
             }
         }
 
@@ -1346,7 +1348,7 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void dgvRevuesListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvRevuesListe.CurrentCell != null)
+            if (DgvRevuesListe.CurrentCell != null)
             {
                 try
                 {
@@ -1409,11 +1411,11 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void VideRevuesZones()
         {
-            cbxRevuesGenres.SelectedIndex = -1;
-            cbxRevuesRayons.SelectedIndex = -1;
-            cbxRevuesPublics.SelectedIndex = -1;
-            txbRevuesNumRecherche.Text = "";
-            txbRevuesTitreRecherche.Text = "";
+            CbxRevuesGenres.SelectedIndex = -1;
+            CbxRevuesRayons.SelectedIndex = -1;
+            CbxRevuesPublics.SelectedIndex = -1;
+            TxbRevuesNumRecherche.Text = "";
+            TxbRevuesTitreRecherche.Text = "";
         }
 
         /// <summary>
@@ -1427,16 +1429,16 @@ namespace MediaTekDocuments.view
             BtnModifierRevue.Enabled = !modif;
             BtnAnnulerChoixRevue.Enabled = modif;
             BtnValiderChoixRevue.Enabled = modif;
-            txbRevuesTitre.ReadOnly = !modif;
-            txbRevuesPeriodicite.ReadOnly = !modif;
-            cbxRevuesPublicInfos.Enabled = modif;
-            txbRevuesDateMiseADispo.ReadOnly = !modif;
-            txbLivresCollection.ReadOnly = !modif;
-            cbxRevuesGenreInfos.Enabled = modif;
-            cbxRevuesRayonInfos.Enabled = modif;
-            txbRevuesImage.ReadOnly = !modif;
-            txbRevuesNumero.ReadOnly = true;
-            dgvRevuesListe.Enabled = !modif;
+            TxbRevuesTitre.ReadOnly = !modif;
+            TxbRevuesPeriodicite.ReadOnly = !modif;
+            CbxRevuesPublicInfos.Enabled = modif;
+            TxbRevuesDateMiseADispo.ReadOnly = !modif;
+            TxbLivresCollection.ReadOnly = !modif;
+            CbxRevuesGenreInfos.Enabled = modif;
+            CbxRevuesRayonInfos.Enabled = modif;
+            TxbRevuesImage.ReadOnly = !modif;
+            TxbRevuesNumero.ReadOnly = true;
+            DgvRevuesListe.Enabled = !modif;
         }
 
         ///<summary>
@@ -1449,9 +1451,9 @@ namespace MediaTekDocuments.view
             BtnModifierRevue.Enabled = false;
             BtnValiderChoixRevue.Enabled = false;
             BtnAnnulerChoixRevue.Enabled = false;
-            cbxRevuesGenreInfos.Enabled = false;
-            cbxRevuesPublicInfos.Enabled = false;
-            cbxRevuesRayonInfos.Enabled = false;
+            CbxRevuesGenreInfos.Enabled = false;
+            CbxRevuesPublicInfos.Enabled = false;
+            CbxRevuesRayonInfos.Enabled = false;
         }
 
         /// <summary>
@@ -1466,14 +1468,14 @@ namespace MediaTekDocuments.view
             string id = plusUnIdString(controller.GetNbRevueMax());
             if (id == "1")
                 id = "10001";
-            txbRevuesNumero.Text = id;
-            txbRevuesTitre.Text = "";
-            txbRevuesPeriodicite.Text = "";
-            txbRevuesDateMiseADispo.Text = "";
-            txbRevuesImage.Text = "";
-            cbxRevuesPublicInfos.SelectedIndex = -1;
-            cbxRevuesGenreInfos.SelectedIndex = -1;
-            cbxRevuesRayonInfos.SelectedIndex = -1;
+            TxbRevuesNumero.Text = id;
+            TxbRevuesTitre.Text = "";
+            TxbRevuesPeriodicite.Text = "";
+            TxbRevuesDateMiseADispo.Text = "";
+            TxbRevuesImage.Text = "";
+            CbxRevuesPublicInfos.SelectedIndex = -1;
+            CbxRevuesGenreInfos.SelectedIndex = -1;
+            CbxRevuesRayonInfos.SelectedIndex = -1;
 
         }
 
@@ -1539,42 +1541,42 @@ namespace MediaTekDocuments.view
             bool checkValid;
             if (MessageBox.Show("Etes vous sur ?", "oui ?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                string id = txbRevuesNumero.Text; ;
+                string id = TxbRevuesNumero.Text;
                 int delaiMiseADispo = 0;
                 int? a = null;
                 int? b = null;
                 try
                 {
-                    a = int.Parse(txbRevuesNumero.Text);
-                    delaiMiseADispo = int.Parse(txbRevuesDateMiseADispo.Text);
+                    a = int.Parse(TxbRevuesNumero.Text);
+                    delaiMiseADispo = int.Parse(TxbRevuesDateMiseADispo.Text);
                     b = delaiMiseADispo;
                 }
                 catch
                 {
                     MessageBox.Show("Le Numéro de document et le delai de mise a dispo doivent etre des entiers");
                 }
-                Genre unGenre = (Genre)cbxRevuesGenreInfos.SelectedItem;
-                Public unPublic = (Public)cbxRevuesPublicInfos.SelectedItem;
-                Rayon unRayon = (Rayon)cbxRevuesRayonInfos.SelectedItem;
+                Genre unGenre = (Genre)CbxRevuesGenreInfos.SelectedItem;
+                Public unPublic = (Public)CbxRevuesPublicInfos.SelectedItem;
+                Rayon unRayon = (Rayon)CbxRevuesRayonInfos.SelectedItem;
                 if (unGenre == null)
                     MessageBox.Show("Genre invalide");
                 if (unPublic == null)
                     MessageBox.Show("Public invalide");
                 if (unRayon == null)
                     MessageBox.Show("Rayon invalide");
-                string titre = txbRevuesTitre.Text;
-                string image = txbRevuesImage.Text;
-                string idGenre = (unGenre == null) ? null : unGenre.Id;
-                string genre = (unGenre == null) ? null : unGenre.Libelle;
-                string idPublic = (unPublic == null) ? null : unPublic.Id;
-                string lePublic = (unPublic == null) ? null : unPublic.Libelle;
-                string idRayon = (unRayon == null) ? null : unRayon.Id;
-                string rayon = (unRayon == null) ? null : unRayon.Libelle;
-                string periodicite = txbRevuesPeriodicite.Text;
+                string titre = TxbRevuesTitre.Text;
+                string image = TxbRevuesImage.Text;
+                string idGenre = unGenre?.Id;
+                string genre = unGenre?.Libelle;
+                string idPublic = unPublic?.Id;
+                string lePublic = unPublic?.Libelle;
+                string idRayon = unRayon?.Id;
+                string rayon = unRayon?.Libelle;
+                string periodicite = TxbRevuesPeriodicite.Text;
                 if (a != null && b != null && titre != "" && genre != null && unPublic != null)
                 {
                     Revue revue = new Revue(id, titre, image, idGenre, genre, idPublic, lePublic, idRayon, rayon, periodicite, delaiMiseADispo);
-                    if (txbRevuesNumero.ReadOnly)  // si on est en  modification
+                    if (TxbRevuesNumero.ReadOnly)  // si on est en  modification
                         checkValid = controller.ModifierRevue(revue);
                     else      // si on est en creation
                         checkValid = controller.CreerRevue(revue);
@@ -1586,7 +1588,7 @@ namespace MediaTekDocuments.view
                     }
                     else
                     {
-                        if (txbRevuesNumero.ReadOnly)
+                        if (TxbRevuesNumero.ReadOnly)
                             MessageBox.Show("numéro de publication déjà existant", "Erreur");
                         else
                             MessageBox.Show("Erreur");
@@ -1604,7 +1606,7 @@ namespace MediaTekDocuments.view
         private void dgvRevuesListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             VideRevuesZones();
-            string titreColonne = dgvRevuesListe.Columns[e.ColumnIndex].HeaderText;
+            string titreColonne = DgvRevuesListe.Columns[e.ColumnIndex].HeaderText;
             List<Revue> sortedList = new List<Revue>();
             switch (titreColonne)
             {
@@ -1647,7 +1649,7 @@ namespace MediaTekDocuments.view
         private void tabReceptionRevue_Enter(object sender, EventArgs e)
         {
             lesRevues = controller.GetAllRevues();
-            txbReceptionRevueNumero.Text = "";
+            TxbReceptionRevueNumero.Text = "";
         }
 
         /// <summary>
@@ -1659,12 +1661,12 @@ namespace MediaTekDocuments.view
             if (exemplaires != null)
             {
                 bdgExemplairesListe.DataSource = exemplaires;
-                dgvReceptionExemplairesListe.DataSource = bdgExemplairesListe;
-                dgvReceptionExemplairesListe.Columns["idEtat"].Visible = false;
-                dgvReceptionExemplairesListe.Columns["id"].Visible = false;
-                dgvReceptionExemplairesListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                dgvReceptionExemplairesListe.Columns["numero"].DisplayIndex = 0;
-                dgvReceptionExemplairesListe.Columns["dateAchat"].DisplayIndex = 1;
+                DgvReceptionExemplairesListe.DataSource = bdgExemplairesListe;
+                DgvReceptionExemplairesListe.Columns["idEtat"].Visible = false;
+                DgvReceptionExemplairesListe.Columns["id"].Visible = false;
+                DgvReceptionExemplairesListe.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                DgvReceptionExemplairesListe.Columns["numero"].DisplayIndex = 0;
+                DgvReceptionExemplairesListe.Columns["dateAchat"].DisplayIndex = 1;
             }
             else
             {
@@ -1679,9 +1681,9 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void btnReceptionRechercher_Click(object sender, EventArgs e)
         {
-            if (!txbReceptionRevueNumero.Text.Equals(""))
+            if (!TxbReceptionRevueNumero.Text.Equals(""))
             {
-                Revue revue = lesRevues.Find(x => x.Id.Equals(txbReceptionRevueNumero.Text));
+                Revue revue = lesRevues.Find(x => x.Id.Equals(TxbReceptionRevueNumero.Text));
                 if (revue != null)
                 {
                     AfficheReceptionRevueInfos(revue);
@@ -1701,14 +1703,14 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void txbReceptionRevueNumero_TextChanged(object sender, EventArgs e)
         {
-            txbReceptionRevuePeriodicite.Text = "";
+            TxbReceptionRevuePeriodicite.Text = "";
             txbReceptionRevueImage.Text = "";
-            txbReceptionRevueDelaiMiseADispo.Text = "";
-            txbReceptionRevueGenre.Text = "";
-            txbReceptionRevuePublic.Text = "";
-            txbReceptionRevueRayon.Text = "";
-            txbReceptionRevueTitre.Text = "";
-            pcbReceptionRevueImage.Image = null;
+            TxbReceptionRevueDelaiMiseADispo.Text = "";
+            TxbReceptionRevueGenre.Text = "";
+            TxbReceptionRevuePublic.Text = "";
+            TxbReceptionRevueRayon.Text = "";
+            TxbReceptionRevueTitre.Text = "";
+            PcbReceptionRevueImage.Image = null;
             RemplirReceptionExemplairesListe(null);
             AccesReceptionExemplaireGroupBox(false);
         }
@@ -1720,22 +1722,22 @@ namespace MediaTekDocuments.view
         private void AfficheReceptionRevueInfos(Revue revue)
         {
             // informations sur la revue
-            txbReceptionRevuePeriodicite.Text = revue.Periodicite;
+            TxbReceptionRevuePeriodicite.Text = revue.Periodicite;
             txbReceptionRevueImage.Text = revue.Image;
-            txbReceptionRevueDelaiMiseADispo.Text = revue.DelaiMiseADispo.ToString();
-            txbReceptionRevueNumero.Text = revue.Id;
-            txbReceptionRevueGenre.Text = revue.Genre;
-            txbReceptionRevuePublic.Text = revue.Public;
-            txbReceptionRevueRayon.Text = revue.Rayon;
-            txbReceptionRevueTitre.Text = revue.Titre;
+            TxbReceptionRevueDelaiMiseADispo.Text = revue.DelaiMiseADispo.ToString();
+            TxbReceptionRevueNumero.Text = revue.Id;
+            TxbReceptionRevueGenre.Text = revue.Genre;
+            TxbReceptionRevuePublic.Text = revue.Public;
+            TxbReceptionRevueRayon.Text = revue.Rayon;
+            TxbReceptionRevueTitre.Text = revue.Titre;
             string image = revue.Image;
             try
             {
-                pcbReceptionRevueImage.Image = Image.FromFile(image);
+                PcbReceptionRevueImage.Image = Image.FromFile(image);
             }
             catch
             {
-                pcbReceptionRevueImage.Image = null;
+                PcbReceptionRevueImage.Image = null;
             }
             // affiche la liste des exemplaires de la revue
             AfficheReceptionExemplairesRevue();
@@ -1746,7 +1748,7 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void AfficheReceptionExemplairesRevue()
         {
-            string idDocuement = txbReceptionRevueNumero.Text;
+            string idDocuement = TxbReceptionRevueNumero.Text;
             lesExemplaires = controller.GetExemplairesRevue(idDocuement);
             RemplirReceptionExemplairesListe(lesExemplaires);
             AccesReceptionExemplaireGroupBox(true);
@@ -1759,11 +1761,11 @@ namespace MediaTekDocuments.view
         /// <param name="acces">true ou false</param>
         private void AccesReceptionExemplaireGroupBox(bool acces)
         {
-            grpReceptionExemplaire.Enabled = acces;
+            GrpReceptionExemplaire.Enabled = acces;
             txbReceptionExemplaireImage.Text = "";
-            txbReceptionExemplaireNumero.Text = "";
+            TxbReceptionExemplaireNumero.Text = "";
             pcbReceptionExemplaireImage.Image = null;
-            dtpReceptionExemplaireDate.Value = DateTime.Now;
+            DtpReceptionExemplaireDate.Value = DateTime.Now;
         }
 
         /// <summary>
@@ -1802,15 +1804,15 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void btnReceptionExemplaireValider_Click(object sender, EventArgs e)
         {
-            if (!txbReceptionExemplaireNumero.Text.Equals(""))
+            if (!TxbReceptionExemplaireNumero.Text.Equals(""))
             {
                 try
                 {
-                    int numero = int.Parse(txbReceptionExemplaireNumero.Text);
-                    DateTime dateAchat = dtpReceptionExemplaireDate.Value;
+                    int numero = int.Parse(TxbReceptionExemplaireNumero.Text);
+                    DateTime dateAchat = DtpReceptionExemplaireDate.Value;
                     string photo = txbReceptionExemplaireImage.Text;
                     string idEtat = ETATNEUF;
-                    string idDocument = txbReceptionRevueNumero.Text;
+                    string idDocument = TxbReceptionRevueNumero.Text;
                     Exemplaire exemplaire = new Exemplaire(numero, dateAchat, photo, idEtat, idDocument);
                     if (controller.CreerExemplaire(exemplaire))
                     {
@@ -1824,8 +1826,8 @@ namespace MediaTekDocuments.view
                 catch
                 {
                     MessageBox.Show("le numéro de parution doit être numérique", "Information");
-                    txbReceptionExemplaireNumero.Text = "";
-                    txbReceptionExemplaireNumero.Focus();
+                    TxbReceptionExemplaireNumero.Text = "";
+                    TxbReceptionExemplaireNumero.Focus();
                 }
             }
             else
@@ -1841,7 +1843,7 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void dgvExemplairesListe_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            string titreColonne = dgvReceptionExemplairesListe.Columns[e.ColumnIndex].HeaderText;
+            string titreColonne = DgvReceptionExemplairesListe.Columns[e.ColumnIndex].HeaderText;
             List<Exemplaire> sortedList = new List<Exemplaire>();
             switch (titreColonne)
             {
@@ -1865,22 +1867,22 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void dgvReceptionExemplairesListe_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvReceptionExemplairesListe.CurrentCell != null)
+            if (DgvReceptionExemplairesListe.CurrentCell != null)
             {
                 Exemplaire exemplaire = (Exemplaire)bdgExemplairesListe.List[bdgExemplairesListe.Position];
                 string image = exemplaire.Photo;
                 try
                 {
-                    pcbReceptionExemplaireRevueImage.Image = Image.FromFile(image);
+                    PcbReceptionExemplaireRevueImage.Image = Image.FromFile(image);
                 }
                 catch
                 {
-                    pcbReceptionExemplaireRevueImage.Image = null;
+                    PcbReceptionExemplaireRevueImage.Image = null;
                 }
             }
             else
             {
-                pcbReceptionExemplaireRevueImage.Image = null;
+                PcbReceptionExemplaireRevueImage.Image = null;
             }
         }
         #endregion
@@ -1981,7 +1983,7 @@ namespace MediaTekDocuments.view
         {
             if (!txbComLivresNumRecherche.Text.Equals(""))
             {
-                txbComLivresTitreRecherche.Text = "";
+                TxbComLivresTitreRecherche.Text = "";
                 cbxComLivresGenres.SelectedIndex = -1;
                 cbxComLivresRayons.SelectedIndex = -1;
                 cbxComLivresPublics.SelectedIndex = -1;
@@ -2012,14 +2014,14 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void TxbComLivresTitreRecherche_TextChanged(object sender, EventArgs e)
         {
-            if (!txbComLivresTitreRecherche.Text.Equals(""))
+            if (!TxbComLivresTitreRecherche.Text.Equals(""))
             {
                 cbxComLivresGenres.SelectedIndex = -1;
                 cbxComLivresRayons.SelectedIndex = -1;
                 cbxComLivresPublics.SelectedIndex = -1;
                 txbComLivresNumRecherche.Text = "";
                 List<Livre> ComLivresParTitre;
-                ComLivresParTitre = lesComLivres.FindAll(x => x.Titre.ToLower().Contains(txbComLivresTitreRecherche.Text.ToLower()));
+                ComLivresParTitre = lesComLivres.FindAll(x => x.Titre.ToLower().Contains(TxbComLivresTitreRecherche.Text.ToLower()));
                 RemplirComLivresListe(ComLivresParTitre);
             }
             else
@@ -2048,7 +2050,7 @@ namespace MediaTekDocuments.view
             cbxComLivresPublicInfos.SelectedIndex = cbxComLivresPublicInfos.FindString(livre.Public);
             cbxComLivresRayonInfos.SelectedIndex = cbxComLivresRayonInfos.FindString(livre.Rayon);
             txbComLivresTitre.Text = livre.Titre;
-            string image = livre.Image;
+            
 
         }
 
@@ -2063,7 +2065,7 @@ namespace MediaTekDocuments.view
         {
             if (cbxComLivresGenres.SelectedIndex >= 0)
             {
-                txbComLivresTitreRecherche.Text = "";
+                TxbComLivresTitreRecherche.Text = "";
                 txbComLivresNumRecherche.Text = "";
                 DgvLesLivresListe.ClearSelection();
                 Genre genre = (Genre)cbxComLivresGenres.SelectedItem;
@@ -2083,7 +2085,7 @@ namespace MediaTekDocuments.view
         {
             if (cbxComLivresPublics.SelectedIndex >= 0)
             {
-                txbComLivresTitreRecherche.Text = "";
+                TxbComLivresTitreRecherche.Text = "";
                 txbComLivresNumRecherche.Text = "";
                 DgvLesLivresListe.ClearSelection();
                 Public lePublic = (Public)cbxComLivresPublics.SelectedItem;
@@ -2104,7 +2106,7 @@ namespace MediaTekDocuments.view
         {
             if (cbxComLivresRayons.SelectedIndex >= 0)
             {
-                txbComLivresTitreRecherche.Text = "";
+                TxbComLivresTitreRecherche.Text = "";
                 txbComLivresNumRecherche.Text = "";
                 DgvLesLivresListe.ClearSelection();
                 Rayon rayon = (Rayon)cbxComLivresRayons.SelectedItem;
@@ -2184,7 +2186,7 @@ namespace MediaTekDocuments.view
             cbxComLivresRayons.SelectedIndex = -1;
             cbxComLivresPublics.SelectedIndex = -1;
             txbComLivresNumRecherche.Text = "";
-            txbComLivresTitreRecherche.Text = "";
+            TxbComLivresTitreRecherche.Text = "";
         }
 
         /// <summary>
@@ -2196,7 +2198,7 @@ namespace MediaTekDocuments.view
             cbxComLivresRayons.SelectedIndex = -1;
             cbxComLivresPublics.SelectedIndex = -1;
             txbComLivresNumRecherche.Text = "";
-            txbComLivresTitreRecherche.Text = "";
+            TxbComLivresTitreRecherche.Text = "";
             GrpLivreCommande.Text = "";
         }
 
@@ -2227,16 +2229,16 @@ namespace MediaTekDocuments.view
             BtnComLivresAnnulGenres.Enabled = !modif;
             BtnComLivresAnnulPublic.Enabled = !modif;
             BtnComLivresAnnulRayon.Enabled = !modif;
-            txbLivresTitre.ReadOnly = !modif;
-            txbLivresAuteur.ReadOnly = !modif;
+            TxbLivresTitre.ReadOnly = !modif;
+            TxbLivresAuteur.ReadOnly = !modif;
             txbComLivresNumRecherche.Enabled = !modif;
-            txbComLivresTitreRecherche.Enabled = !modif;
-            cbxLivresPublicInfos.Enabled = modif;
+            TxbComLivresTitreRecherche.Enabled = !modif;
+            CbxLivresPublicInfos.Enabled = modif;
             txbComLivresNumero.ReadOnly = !modif;
-            txbLivresCollection.ReadOnly = !modif;
-            cbxLivresGenreInfos.Enabled = modif;
-            cbxLivresRayonInfos.Enabled = modif;
-            txbLivresImage.ReadOnly = !modif;
+            TxbLivresCollection.ReadOnly = !modif;
+            CbxLivresGenreInfos.Enabled = modif;
+            CbxLivresRayonInfos.Enabled = modif;
+            TxbLivresImage.ReadOnly = !modif;
             txbComLivresNumero.ReadOnly = true;
             DgvLesLivresListe.Enabled = !modif;
             dgvLivresCommande.Enabled = !modif;
@@ -2414,7 +2416,7 @@ namespace MediaTekDocuments.view
                 }
                 else
                     MessageBox.Show("Veuillez selectionner un etat");
-                if (montant != -1 && nbExemplaire != -1 && etat != "")
+                if (montant <= -1 && nbExemplaire != -1 && etat != "")
                 {
                     CommandeDocument commandeLivre = new CommandeDocument(id, dateCommande, montant, nbExemplaire, idLivreDvd, idSuivi, etat);
                     if (!ajouterBool)
@@ -2758,7 +2760,7 @@ namespace MediaTekDocuments.view
             cbxComDvdPublicInfos.SelectedIndex = cbxComDvdPublicInfos.FindString(dvd.Public);
             cbxComDvdRayonInfos.SelectedIndex = cbxComDvdRayonInfos.FindString(dvd.Rayon);
             txbComDvdTitre.Text = dvd.Titre;
-            string image = dvd.Image;
+            
 
         }
 
@@ -2935,16 +2937,16 @@ namespace MediaTekDocuments.view
             BtnComLivresAnnulGenres.Enabled = !modif;
             BtnComLivresAnnulPublic.Enabled = !modif;
             BtnComLivresAnnulRayon.Enabled = !modif;
-            txbDvdTitre.ReadOnly = !modif;
-            txbDvdRealisateur.ReadOnly = !modif;
+            TxbDvdTitre.ReadOnly = !modif;
+            TxbDvdRealisateur.ReadOnly = !modif;
             txbComDvdNumRecherche.Enabled = !modif;
             txbComDvdTitreRecherche.Enabled = !modif;
-            cbxDvdPublicInfos.Enabled = modif;
+            CbxDvdPublicInfos.Enabled = modif;
             txbCommandeDvdNumero.ReadOnly = !modif;
-            txbDvdDuree.ReadOnly = !modif;
-            cbxDvdGenreInfos.Enabled = modif;
-            cbxDvdRayonInfos.Enabled = modif;
-            txbDvdImage.ReadOnly = !modif;
+            TxbDvdDuree.ReadOnly = !modif;
+            CbxDvdGenreInfos.Enabled = modif;
+            CbxDvdRayonInfos.Enabled = modif;
+            TxbDvdImage.ReadOnly = !modif;
             txbComDvdNumero.ReadOnly = true;
             dgvComDvdListe.Enabled = !modif;
             dgvCommandeDvd.Enabled = !modif;
@@ -3121,7 +3123,7 @@ namespace MediaTekDocuments.view
                 }
                 else
                     MessageBox.Show("Veuillez selectionner un etat");
-                if (montant != -1 && nbExemplaire != -1 && etat != "")
+                if (montant <= -1 && nbExemplaire != -1 && etat != "")
                 {
                     CommandeDocument commandeDvd = new CommandeDocument(id, dateCommande, montant, nbExemplaire, idLivreDvd, idSuivi, etat);
                     if (!ajouterBool)
@@ -3689,7 +3691,7 @@ namespace MediaTekDocuments.view
             cbxInfoRevueGenre.SelectedIndex = cbxInfoRevueGenre.FindString(revue.Genre);
             cbxInfoRevuePublic.SelectedIndex = cbxInfoRevuePublic.FindString(revue.Public);
             cbxInfoRevueRayon.SelectedIndex = cbxInfoRevueRayon.FindString(revue.Rayon);
-            //string image = revue.Image;
+            
             
         }
 

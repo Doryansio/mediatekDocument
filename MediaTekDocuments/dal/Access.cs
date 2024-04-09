@@ -392,8 +392,10 @@ namespace MediaTekDocuments.dal
         /// <returns>couple au format json</returns>
         private String convertToJson(Object nom, Object valeur)
         {
-            Dictionary<Object, Object> dictionary = new Dictionary<Object, Object>();
-            dictionary.Add(nom, valeur);
+            Dictionary<Object, Object> dictionary = new Dictionary<Object, Object>
+            {
+                { nom, valeur }
+            };
             return JsonConvert.SerializeObject(dictionary);
         }
 
