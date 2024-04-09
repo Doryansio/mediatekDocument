@@ -410,7 +410,7 @@ namespace MediaTekDocuments.view
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(884, 838);
+            this.tabControl.Size = new System.Drawing.Size(884, 749);
             this.tabControl.TabIndex = 0;
             this.tabControl.Enter += new System.EventHandler(this.tabAbonnement_Enter);
             // 
@@ -420,7 +420,7 @@ namespace MediaTekDocuments.view
             this.tabLivres.Controls.Add(this.grpLivresRecherche);
             this.tabLivres.Location = new System.Drawing.Point(4, 22);
             this.tabLivres.Name = "tabLivres";
-            this.tabLivres.Size = new System.Drawing.Size(876, 812);
+            this.tabLivres.Size = new System.Drawing.Size(876, 723);
             this.tabLivres.TabIndex = 2;
             this.tabLivres.Text = "Livres";
             this.tabLivres.UseVisualStyleBackColor = true;
@@ -3816,7 +3816,7 @@ namespace MediaTekDocuments.view
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 838);
+            this.ClientSize = new System.Drawing.Size(884, 749);
             this.Controls.Add(this.tabControl);
             this.Name = "FrmMediatek";
             this.Text = "Gestion des documents de la médiathèque";

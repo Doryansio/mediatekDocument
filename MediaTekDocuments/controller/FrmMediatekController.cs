@@ -77,7 +77,7 @@ namespace MediaTekDocuments.controller
         /// </summary>
         /// <param name="utilisateur"></param>
         /// <returns></returns>
-        public bool verifDroitAccueil(Utilisateur utilisateur)
+        public bool VerifDroitAccueil(Utilisateur utilisateur)
         {
             Console.WriteLine(utilisateur.Nom);
             List<string> services = new List<string> { "compta", "biblio", "accueil" };
@@ -92,7 +92,7 @@ namespace MediaTekDocuments.controller
         /// </summary>
         /// <param name="utilisateur"></param>
         /// <returns></returns>
-        public bool verifDroitModif(Utilisateur utilisateur)
+        public bool VerifDroitModif(Utilisateur utilisateur)
         {
             Console.WriteLine(utilisateur.Nom);
             List<string> services = new List<string> { "biblio", "accueil" };
@@ -107,7 +107,7 @@ namespace MediaTekDocuments.controller
         /// </summary>
         /// <param name="utilisateur"></param>
         /// <returns></returns>
-        public bool verifCommande(Utilisateur utilisateur)
+        public bool VerifCommande(Utilisateur utilisateur)
         {
             List<string> services = new List<string> { "biblio" };
             if (services.Contains(utilisateur.Service))
@@ -286,36 +286,36 @@ namespace MediaTekDocuments.controller
         /// Retourne l'id max des commandes
         /// </summary>
         /// <returns></returns>
-        public string getNbCommandeMax()
+        public string GetNbCommandeMax()
         {
-            return access.getMaxIndex("maxcommande");
+            return access.GetMaxIndex("maxcommande");
         }
 
         /// <summary>
         /// Retourne l'id max des livres
         /// </summary>
         /// <returns></returns>
-        public string getNbLivreMax()
+        public string GetNbLivreMax()
         {
-            return access.getMaxIndex("maxlivre");
+            return access.GetMaxIndex("maxlivre");
         }
 
         /// <summary>
         /// Retourne l'id max des Dvd
         /// </summary>
         /// <returns></returns>
-        public string getNbDvdMax()
+        public string GetNbDvdMax()
         {
-            return access.getMaxIndex("maxdvd");
+            return access.GetMaxIndex("maxdvd");
         }
 
         /// <summary>
         /// Retourne l'id max des revues
         /// </summary>
         /// <returns></returns>
-        public string getNbRevueMax()
+        public string GetNbRevueMax()
         {
-            return access.getMaxIndex("maxrevue");
+            return access.GetMaxIndex("maxrevue");
         }
 
         /// <summary>
@@ -328,17 +328,19 @@ namespace MediaTekDocuments.controller
         /// <param name="idSuivi"></param>
         /// <param name="verbose"></param>
         /// <returns></returns>
-        public bool utilCommandeDocument(string id, DateTime dateCommande, double montant, int nbExemplaire,
+        public bool UtilCommandeDocument(string id, DateTime dateCommande, double montant, int nbExemplaire,
             string idLivreDvd, int idSuivi, string etat, string verbose)
         {
-            Dictionary<string, object> uneCommandeDocument = new Dictionary<string, object>();
-            uneCommandeDocument.Add("Id", id);
-            uneCommandeDocument.Add("DateCommande", dateCommande.ToString("yyyy-MM-dd"));
-            uneCommandeDocument.Add("Montant", montant);
-            uneCommandeDocument.Add("NbExemplaire", nbExemplaire);
-            uneCommandeDocument.Add("IdLivreDvd", idLivreDvd);
-            uneCommandeDocument.Add("IdSuivi", idSuivi);
-            uneCommandeDocument.Add("Etat", etat);
+            Dictionary<string, object> uneCommandeDocument = new Dictionary<string, object>
+            {
+                { "Id", id },
+                { "DateCommande", dateCommande.ToString("yyyy-MM-dd") },
+                { "Montant", montant },
+                { "NbExemplaire", nbExemplaire },
+                { "IdLivreDvd", idLivreDvd },
+                { "IdSuivi", idSuivi },
+                { "Etat", etat }
+            };
 
             if (verbose == "post")
                 return access.CreerEntite("commandedocument", JsonConvert.SerializeObject(uneCommandeDocument));
@@ -356,7 +358,7 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool CreerLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
+            return UtilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
                     commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "post");
         }
 
@@ -367,7 +369,7 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool ModifierLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
+            return UtilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
                    commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "update");
         }
 
@@ -378,7 +380,7 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool SupprimerLivreDvdCom(CommandeDocument commandeLivreDvd)
         {
-            return utilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
+            return UtilCommandeDocument(commandeLivreDvd.Id, commandeLivreDvd.DateCommande, commandeLivreDvd.Montant, commandeLivreDvd.NbExemplaire,
                    commandeLivreDvd.IdLivreDvd, commandeLivreDvd.IdSuivi, commandeLivreDvd.Etat, "delete");
         }
         #endregion
@@ -406,14 +408,16 @@ namespace MediaTekDocuments.controller
         /// <param name="idRevue"></param>
         /// <param name="verbose"></param>
         /// <returns></returns>
-        public bool utilAbonnement(string id, DateTime dateCommande, double montant, DateTime dateFinAbonnement, string idRevue, string verbose)
+        public bool UtilAbonnement(string id, DateTime dateCommande, double montant, DateTime dateFinAbonnement, string idRevue, string verbose)
         {
-            Dictionary<string, object> unAbonnement = new Dictionary<string, object>();
-            unAbonnement.Add("Id", id);
-            unAbonnement.Add("DateCommande", dateCommande.ToString("yyyy-MM-dd"));
-            unAbonnement.Add("Montant", montant);
-            unAbonnement.Add("DateFinAbonnement", dateFinAbonnement.ToString("yyyy-MM-dd"));
-            unAbonnement.Add("IdRevue", idRevue);
+            Dictionary<string, object> unAbonnement = new Dictionary<string, object>
+            {
+                { "Id", id },
+                { "DateCommande", dateCommande.ToString("yyyy-MM-dd") },
+                { "Montant", montant },
+                { "DateFinAbonnement", dateFinAbonnement.ToString("yyyy-MM-dd") },
+                { "IdRevue", idRevue }
+            };
 
             if (verbose == "post")
                 return access.CreerEntite("abonnement", JsonConvert.SerializeObject(unAbonnement));
@@ -431,7 +435,7 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool CreerAbonnement(Abonnement abonnement)
         {
-            return utilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "post");
+            return UtilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "post");
         }
 
         /// <summary>
@@ -441,7 +445,7 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool ModifierAbonnement(Abonnement abonnement)
         {
-            return utilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "update");
+            return UtilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "update");
         }
 
         /// <summary>
@@ -451,7 +455,7 @@ namespace MediaTekDocuments.controller
         /// <returns></returns>
         public bool SupprimerAbonnement(Abonnement abonnement)
         {
-            return utilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "delete");
+            return UtilAbonnement(abonnement.Id, abonnement.DateCommande, abonnement.Montant, abonnement.DateFinAbonnement, abonnement.IdRevue, "delete");
         }
 
         #endregion
