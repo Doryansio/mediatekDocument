@@ -30,3 +30,5 @@ C:\Users\Doryan\Downloads\MediaTekDocuments\MediaTekDocuments\MediaTekDocuments\
 C:\Users\Doryan\Downloads\MediaTekDocuments\MediaTekDocuments\MediaTekDocuments\packages.config
 C:\Users\Doryan\Downloads\MediaTekDocuments\MediaTekDocuments\MediaTekDocuments\Properties\Settings.settings
 C:\Users\Doryan\Downloads\MediaTekDocuments\MediaTekDocuments\MediaTekDocuments\App.config
+C:\Users\Doryan\Downloads\MediaTekDocuments\MediaTekDocuments\packages\ZstdNet.1.4.5\build\x64\libzstd.dll
+C:\Users\Doryan\Downloads\MediaTekDocuments\MediaTekDocuments\packages\ZstdNet.1.4.5\build\x86\libzstd.dll
