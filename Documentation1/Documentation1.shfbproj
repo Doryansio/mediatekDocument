@@ -69,6 +69,49 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Documentation.chm" />
+    <None Include="Documentation\Documentation.chm" />
+    <None Include="Documentation\rest_MediatekDocument\nbproject\private\config.properties" />
+    <None Include="Documentation\rest_MediatekDocument\nbproject\private\private.properties" />
+    <None Include="Documentation\rest_MediatekDocument\nbproject\private\private.xml" />
+    <None Include="Documentation\rest_MediatekDocument\nbproject\project.properties" />
+    <None Include="Documentation\rest_MediatekDocument\nbproject\project.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Documentation" />
+    <Folder Include="Documentation\rest_MediatekDocument" />
+    <Folder Include="Documentation\rest_MediatekDocument\classes\" />
+    <Folder Include="Documentation\rest_MediatekDocument\css\" />
+    <Folder Include="Documentation\rest_MediatekDocument\files\" />
+    <Folder Include="Documentation\rest_MediatekDocument\graphs\" />
+    <Folder Include="Documentation\rest_MediatekDocument\indices\" />
+    <Folder Include="Documentation\rest_MediatekDocument\js\" />
+    <Folder Include="Documentation\rest_MediatekDocument\namespaces\" />
+    <Folder Include="Documentation\rest_MediatekDocument\nbproject\" />
+    <Folder Include="Documentation\rest_MediatekDocument\nbproject\private\" />
+    <Folder Include="Documentation\rest_MediatekDocument\packages\" />
+    <Folder Include="Documentation\rest_MediatekDocument\reports\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentation\rest_MediatekDocument\classes\AccessBDD.html" />
+    <Content Include="Documentation\rest_MediatekDocument\classes\ConnexionPDO.html" />
+    <Content Include="Documentation\rest_MediatekDocument\classes\Controle.html" />
+    <Content Include="Documentation\rest_MediatekDocument\css\base.css" />
+    <Content Include="Documentation\rest_MediatekDocument\css\normalize.css" />
+    <Content Include="Documentation\rest_MediatekDocument\css\template.css" />
+    <Content Include="Documentation\rest_MediatekDocument\files\accessbdd.html" />
+    <Content Include="Documentation\rest_MediatekDocument\files\connexionpdo.html" />
+    <Content Include="Documentation\rest_MediatekDocument\files\controle.html" />
+    <Content Include="Documentation\rest_MediatekDocument\files\mediatekdocuments.html" />
+    <Content Include="Documentation\rest_MediatekDocument\graphs\classes.html" />
+    <Content Include="Documentation\rest_MediatekDocument\index.html" />
+    <Content Include="Documentation\rest_MediatekDocument\indices\files.html" />
+    <Content Include="Documentation\rest_MediatekDocument\js\search.js" />
+    <Content Include="Documentation\rest_MediatekDocument\js\searchIndex.js" />
+    <Content Include="Documentation\rest_MediatekDocument\namespaces\default.html" />
+    <Content Include="Documentation\rest_MediatekDocument\packages\deprecated.html" />
+    <Content Include="Documentation\rest_MediatekDocument\packages\errors.html" />
+    <Content Include="Documentation\rest_MediatekDocument\packages\markers.html" />
+    <Content Include="Documentation\rest_MediatekDocument\reports\Application.html" />
+    <Content Include="Documentation\rest_MediatekDocument\reports\default.html" />
   </ItemGroup>
 </Project>
