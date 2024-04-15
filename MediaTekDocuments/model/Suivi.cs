@@ -18,7 +18,10 @@ namespace MediaTekDocuments.model
             this.Id = id;
             this.Etat = etat;
         }
-
+        /// <summary>
+        /// Permet de retourner le libellé en chaine de caractere
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.Etat;

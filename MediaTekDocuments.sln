@@ -9,7 +9,78 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaTekDocumentsTests", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpecFlowProject4", "SpecFlowProject4\SpecFlowProject4.csproj", "{2A8969C7-0EED-45F8-9F32-D7FA3DE50D30}"
 EndProject
-Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Documentation1", "Documentation1\Documentation1.shfbproj", "{AA0BA5EC-A2B4-4894-8FA6-DBC4F6DD65EB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{4A02DF30-6AFF-4782-8C8D-88196850A2B8}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation1\Help\Documentation.chm = Documentation1\Help\Documentation.chm
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "restMediatekDocuments", "restMediatekDocuments", "{6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\index.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\index.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "classes", "classes", "{2898DD84-5834-482D-918F-3046AE8AC292}"
+	ProjectSection(SolutionItems) = preProject
+		D:\wamp64\www\restmediatekdocuments-doc\classes\AccessBDD.html = D:\wamp64\www\restmediatekdocuments-doc\classes\AccessBDD.html
+		D:\wamp64\www\restmediatekdocuments-doc\classes\ConnexionPDO.html = D:\wamp64\www\restmediatekdocuments-doc\classes\ConnexionPDO.html
+		D:\wamp64\www\restmediatekdocuments-doc\classes\Controle.html = D:\wamp64\www\restmediatekdocuments-doc\classes\Controle.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "css", "css", "{61CED2BB-7A06-4A0B-A900-1E43F3E9578E}"
+	ProjectSection(SolutionItems) = preProject
+		D:\wamp64\www\restmediatekdocuments-doc\css\base.css = D:\wamp64\www\restmediatekdocuments-doc\css\base.css
+		D:\wamp64\www\restmediatekdocuments-doc\css\normalize.css = D:\wamp64\www\restmediatekdocuments-doc\css\normalize.css
+		D:\wamp64\www\restmediatekdocuments-doc\css\template.css = D:\wamp64\www\restmediatekdocuments-doc\css\template.css
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{B68382A0-5A9B-4E2F-BCEE-384D6EF8C2EF}"
+	ProjectSection(SolutionItems) = preProject
+		D:\wamp64\www\restmediatekdocuments-doc\files\accessbdd.html = D:\wamp64\www\restmediatekdocuments-doc\files\accessbdd.html
+		D:\wamp64\www\restmediatekdocuments-doc\files\connexionpdo.html = D:\wamp64\www\restmediatekdocuments-doc\files\connexionpdo.html
+		D:\wamp64\www\restmediatekdocuments-doc\files\controle.html = D:\wamp64\www\restmediatekdocuments-doc\files\controle.html
+		D:\wamp64\www\restmediatekdocuments-doc\files\mediatekdocuments.html = D:\wamp64\www\restmediatekdocuments-doc\files\mediatekdocuments.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "graphs", "graphs", "{F443718A-6D6E-4C64-BFF5-BE1A3FD8A97C}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\graphs\classes.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\graphs\classes.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "indices", "indices", "{7A06DDF2-693F-4C7F-B550-B89AF82C759C}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\indices\files.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\indices\files.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "namespaces", "namespaces", "{85F35055-5E2C-457A-BAB3-FCABED50D886}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\namespaces\default.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\namespaces\default.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nbproject", "nbproject", "{414BE02F-78A5-4547-8CCA-A9A41CAFED51}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\project.properties = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\project.properties
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\project.xml = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\project.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "privates", "privates", "{E27FE561-643C-454D-B869-4560F5C11CA1}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\private\config.properties = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\private\config.properties
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\private\private.properties = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\private\private.properties
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\private\private.xml = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\nbproject\private\private.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{0C64B2DD-4CC6-4827-B909-1CA81C955196}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\packages\Application.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\packages\Application.html
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\packages\default.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\packages\default.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reports", "reports", "{A311FAEC-B47A-495D-B064-7D7A902E75A5}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\reports\deprecated.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\reports\deprecated.html
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\reports\errors.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\reports\errors.html
+		..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\reports\markers.html = ..\..\..\source\repos\WebApplication4\WebApplication4\restmediatekdocuments-doc\reports\markers.html
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,13 +100,22 @@ Global
 		{2A8969C7-0EED-45F8-9F32-D7FA3DE50D30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A8969C7-0EED-45F8-9F32-D7FA3DE50D30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A8969C7-0EED-45F8-9F32-D7FA3DE50D30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA0BA5EC-A2B4-4894-8FA6-DBC4F6DD65EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA0BA5EC-A2B4-4894-8FA6-DBC4F6DD65EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA0BA5EC-A2B4-4894-8FA6-DBC4F6DD65EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA0BA5EC-A2B4-4894-8FA6-DBC4F6DD65EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A} = {4A02DF30-6AFF-4782-8C8D-88196850A2B8}
+		{2898DD84-5834-482D-918F-3046AE8AC292} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{61CED2BB-7A06-4A0B-A900-1E43F3E9578E} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{B68382A0-5A9B-4E2F-BCEE-384D6EF8C2EF} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{F443718A-6D6E-4C64-BFF5-BE1A3FD8A97C} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{7A06DDF2-693F-4C7F-B550-B89AF82C759C} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{85F35055-5E2C-457A-BAB3-FCABED50D886} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{414BE02F-78A5-4547-8CCA-A9A41CAFED51} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{E27FE561-643C-454D-B869-4560F5C11CA1} = {414BE02F-78A5-4547-8CCA-A9A41CAFED51}
+		{0C64B2DD-4CC6-4827-B909-1CA81C955196} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
+		{A311FAEC-B47A-495D-B064-7D7A902E75A5} = {6B60E24A-B0B4-4BD6-A1C3-E93FB9A8630A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9B2569CA-5E60-4743-9497-FCE8940AD153}

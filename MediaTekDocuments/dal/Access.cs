@@ -189,7 +189,10 @@ namespace MediaTekDocuments.dal
             List<Revue> lesRevues = TraitementRecup<Revue>(GET, "revue");
             return lesRevues;
         }
-
+        /// <summary>
+        /// Retournes tout les suivis
+        /// </summary>
+        /// <returns>Liste d'objet Suivi</returns>
         public List<Suivi> GetAllSuivis()
         {
             IEnumerable<Suivi> LesSuivis = TraitementRecup<Suivi>(GET, "suivi");
@@ -224,6 +227,7 @@ namespace MediaTekDocuments.dal
         /// <summary>
         /// Créer une entite dans la BDD, return true si l'opération, c'est correctement déroulé
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="jsonEntite"></param>
         /// <returns></returns>
         public bool CreerEntite(string type, String jsonEntite)
@@ -246,6 +250,7 @@ namespace MediaTekDocuments.dal
         /// <summary>
         /// Modifie une entite dans la BDD, return true si l'opération, c'est correctement déroulé
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="id"></param>
         /// <param name="jsonEntite"></param>
         /// <returns></returns>
@@ -255,7 +260,7 @@ namespace MediaTekDocuments.dal
             try
             {
                 // récupération soit d'une liste vide (requête ok) soit de null (erreur)
-                List<Object> liste = TraitementRecup<Object>(PUT, type + "/" + id + "/" + jsonEntite);
+                List<Object> liste = TraitementRecup<object>(PUT, type + "/" + id + "/" + jsonEntite);
                 return (liste != null);
             }
             catch (Exception ex)
@@ -271,6 +276,7 @@ namespace MediaTekDocuments.dal
         /// <summary>
         /// Supprime une entité dans la BDD, return true si l'opération, c'est correctement déroulé
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="jsonEntite"></param>
         /// <returns></returns>
         public bool SupprimerEntite(string type, String jsonEntite)
