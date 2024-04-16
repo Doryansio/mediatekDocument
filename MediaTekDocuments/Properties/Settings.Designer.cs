@@ -36,7 +36,7 @@ namespace MediaTekDocuments.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost/rest_mediatekdocuments/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://monapirest1.francecentral.cloudapp.azure.com/rest_mediatekdocuments1/")]
         public string mediatekConnectionString {
             get {
                 return ((string)(this["mediatekConnectionString"]));
